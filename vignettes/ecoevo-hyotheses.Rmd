@@ -33,14 +33,29 @@ where *S* and *I* are the susceptible and infected host population size, *B* is 
 
 Virulence (α) can evolve if the additive genetic variance for this trait *V* > 0, and the rate of change for this trait depends on the susceptible host population size (*d*α/*dt* ~ *f*(*S*)). This link between the evolving trait and host population dynamics can represent an eco-evolutionary feedback as *S* ~ *f*(α) and *d*α/*dt* ~ *f*(*S*) (Lion 2018).
 
+In such a system, ecological, evolutionary, and interacting eco-evolutionary processes may be occurring. A researcher can generate simulation models under a series of alternative hypotheses and compare simulated to observed data. We consider population dynamics for (1) Hypothesis 1: virulence evolution is not possible (the additive genetic variance for virulence *V* = 0), (2) Hypothesis 2: virulence evolution is possible (*V* > 0) and there are eco-evolutionary feedbacks (*S* ~ *f*(α) and *d*α/*dt* ~ *f*(*S*)), and (3) Hypothesis 3: virulence evolution is possible (*V* > 0) but eco-evolutionary dynamics are removed from the system by decoupling the dependence of virulence evolution from host population dynamics (*d*α/*dt* !~ *f*(*S*)). The population dynamics for all three hypothesized scenarios are shown in Figure 1.
+
 ```{r}
-x <- "alfa,bravo,charlie,delta"
-strsplit1(x, split = ",")
+# H1. No evolution (V = 0)
+parms <- c(B = (10^7), mu = 1, V = 0, gam = 2, c = 3*10^-7)
+times <- seq(from=0,to=40,by=1)
+xstart <- c(S=10^7,I=1,alpha=4)
+h1 <- hostpath_evol(times,xstart,parms)
+
+# H2. Evolution (V = 4)
+parms <- c(B = (10^7), mu = 1, V = 4, gam = 2, c = 3*10^-7)
+times <- seq(from=0,to=40,by=1)
+xstart <- c(S=10^7,I=1,alpha=4)
+h2 <- hostpath_evol(times,xstart,parms)
+
 ```
 
 
-### 2.1 Hypothesis 1
-One potential null hypothesis for this system could be that phenotypic evolution is not possible (the additive genetic variance for virulence *V* = 0).
+and a feedback between evolution and ecology is possible
+
+### 2.1 Hypothesis 1. XXX
+
+One potential null hypothesis for this system could be that phenotypic evolution is not possible (the additive genetic variance for virulence *V* = 0), with an alternative hypothesis where evolution (V > 0) and a feedback between evolution and ecology is possible, and an additional alternative hypothesis where eco-evolutionary dynamics are removed from the system by decoupling the dependence of virulence evolution from host population dynamics (dα/dt !~ f(S); Figure 1).
 
 STOPPED
 

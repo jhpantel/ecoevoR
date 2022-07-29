@@ -4,7 +4,7 @@
 \alias{hostpath_evol}
 \title{Simulate host-pathogen eco-evolutionary model}
 \usage{
-hostpath_evol(t, x, params)
+hostpath_evol(t, x, params, method = c("ecoXevo", "eco_evo"))
 }
 \arguments{
 \item{t}{A vector of time steps for which the differential equations will be evaluated across}
@@ -12,6 +12,8 @@ hostpath_evol(t, x, params)
 \item{x}{A vector of starting values for S, I, and alpha}
 
 \item{params}{A vector of values for the model parameters B, μ, V, γ, and c}
+
+\item{method}{A text string indicating which function to use for the ODE system. "ecoXevo" there is an eco-evolutionary feedback between pathogen virulence evolution and host population size. In "eco_evo virulence evolution is not dependent on S and there is no eco-evolutionary feedback.}
 }
 \value{
 A dataframe with the elements:
@@ -30,6 +32,6 @@ The function calls ode (deSolve) to solve the system of ordinary differential eq
 parms <- c(B = (10^7), mu = 1, V = 0, gam = 2, c = 3*10^-7)
 times <- seq(from=0,to=40,by=1)
 xstart <- c(S=10^7,I=1,alpha=4)
-out <- hostpath_evol(times,xstart,parms)
+out <- hostpath_evol(times,xstart,parms,method="ecoXevo")
 
 }
