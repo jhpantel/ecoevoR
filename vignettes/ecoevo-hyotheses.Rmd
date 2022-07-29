@@ -18,6 +18,9 @@ knitr::opts_chunk$set(
 library(ecoevor)
 library(deSolve)
 library(tidyverse)
+library(ggplot2)
+library(gen3sis)
+library(raster)
 ```
 ## 1 Overview
 Eco-evolutionary hypothesis testing is implemented by using theoretical or simulation models to compare alternative mechanistic processes that may be structuring data. We introduce two eco-evolutionary models and for each, we run simulations under parameter values or model components that match distinct eco-evolutionary hyotheses. In a separate vignette eco-evo-ABC, we describe how to use Approximate Bayesian Computing (and alternatively machine learning) to compare data generated under these alternative hypotheses to observed data (albeit such data is simulated in these examples).
@@ -40,24 +43,57 @@ In such a system, ecological, evolutionary, and interacting eco-evolutionary pro
 parms <- c(B = (10^7), mu = 1, V = 0, gam = 2, c = 3*10^-7)
 times <- seq(from=0,to=40,by=1)
 xstart <- c(S=10^7,I=1,alpha=4)
-h1 <- hostpath_evol(times,xstart,parms)
+h1 <- hostpath_evol(times,xstart,parms,method="ecoXevo")
 
 # H2. Evolution (V = 4)
 parms <- c(B = (10^7), mu = 1, V = 4, gam = 2, c = 3*10^-7)
 times <- seq(from=0,to=40,by=1)
 xstart <- c(S=10^7,I=1,alpha=4)
-h2 <- hostpath_evol(times,xstart,parms)
+h2 <- hostpath_evol(times,xstart,parms,method="ecoXevo")
+
+# H3. Evolution (V = 4), no eco-evo feedback
+parms <- c(B = (10^7), mu = 1, V = 5, gam = 2, c = 3*10^-7)
+times <- seq(from=0,to=40,by=1)
+xstart <- c(S=10^7,I=1,alpha=4)
+h3 <- hostpath_evol(times,xstart,parms,method="eco_evo")
+```
+
+```{r}
+out1 <- h1 %>% gather(variable,value,-time)
+out1$H <- "H1"
+out2 <- h2 %>% gather(variable,value,-time)
+out2$H <- "H2"
+out3 <- h3 %>% gather(variable,value,-time)
+out3$H <- "H3"
+out <- rbind(out1,out2,out3)
+
+coeff <- 2*10^6
+out$value[out$variable == "alpha"] <- out$value[out$variable == "alpha"]*coeff
+
+out  %>%
+  ggplot(aes(x=time,y=value,color=variable))+
+  geom_line(aes(linetype=H),size=1.5)+
+  theme_classic()+
+  labs(x='time (yr)')+
+  scale_y_continuous(
+    # First y-axis
+    name = "number of individuals",
+    sec.axis = sec_axis(~./coeff, name="virulence")
+  )
 
 ```
 
+## 3 Example 2. macroevolution, speciation, and community assembly
+In Figure 2 of Pantel & Becks 202x, we discuss a model of evolution, speciation, and community assembly using the gen3sis eco-evolutionary simulation engine (Hagen et al. 2021). We adapt their model with a hypothetical community of 10 ancestral species, randomly placed as a single initial population on the map of South America (an 81x71 grid with cell-specific temperature values that impact population growth via the distance between a local population’s trait value and the local optimum and that impact local carrying capacity). Movement is via a cost function based on the distance between sites and a species-specific dispersal value, and evolution and speciation occurs across the dynamic landscape over 40 million years.
 
-and a feedback between evolution and ecology is possible
+In such a system, ecological and evolutionary processes combine to structure biodiversity patterns at multiple scales, but determining the nature of which processes are most likely to drive observed contemporary biodiversity data can be difficult. However, a researcher can generate simulation models under a series of alternative hypotheses and compare simulated to observed data. We consider eco-macroevolutionary dynamics for:
 
-### 2.1 Hypothesis 1. XXX
+  (1) Hypothesis 1 (H1): evolution in a single trait - each deme experiences evolution in the temperature trait (that determines the population growth), with mean traits of the population after evolution xμ-temp drawn from a random normal distribution centered on parental trait values xtemp and mutation standard deviation of σμ-temp = 0.001.
+  (2) Hypothesis 2 (H2): evolution in two traits that evolve at the same rate - evolution in an additional trait, dispersal (which determines the connectivity between sites and colonization of new sites) is considered, with xμ-disp ~ N(xdisp, σμ-disp = 0.001).
+  (3) Hypothesis 3 (H3): evolution in two traits that evolve at differing rates - evolution of the dispersal trait is much faster than the temperature trait (σμ-temp = 0.001, σμ-disp = 0.01).
+  (4) Hypothesis 4 (H4): evolution in two correlated traits - evolution of the dispersal trait is much faster than the temperature trait (as in e) and the traits are correlated (rtemp-disp = -0.25).
 
-One potential null hypothesis for this system could be that phenotypic evolution is not possible (the additive genetic variance for virulence *V* = 0), with an alternative hypothesis where evolution (V > 0) and a feedback between evolution and ecology is possible, and an additional alternative hypothesis where eco-evolutionary dynamics are removed from the system by decoupling the dependence of virulence evolution from host population dynamics (dα/dt !~ f(S); Figure 1).
-
-STOPPED
+For all four hypotheses, the final alpha diversity (local species richness) and time series of some summary statistics (number of speciation and extinction events, total regional richness) are shown. These summary statistics create features that could be used for comparison to observed data to distinguish among the alternative hypotheses that may have structured observed data.
 
 ```{r}
 # H1. No evolution (V = 0)
@@ -67,25 +103,9 @@ xstart <- c(S=10^7,I=1,alpha=4)
 out <- hostpath_evol(times,xstart,parms)
 ```
 
-
-
-
-
-
-
-
-
-, with an alternative hypothesis where evolution (V > 0) and a feedback between evolution and ecology is possible, and an additional alternative hypothesis where eco-evolutionary dynamics are removed from the system by decoupling the dependence of virulence evolution from host population dynamics (dα/dt !~ f(S); Figure 1). Additional simulations can be used to explore the impacts of different trade-off functions (between virulence and transmission, or in the relationship between evolutionary change in virulence and population size of susceptible hosts.
-
-Eco-evolutionary hypotheses for structure of observed dynamics. (a-b) Simulations of the eco-evolutionary epidemiological model with virulence evolution (Luo & Koelle 2013) are shown with many of the same model parameters (e.g. S0 = X, α0 = 4, γ = 2; see Supplement X for additional parameter values), but under three alternative hypotheses that can be used to compare to observed data to identify the existence of trait evolution and of eco-evolutionary feedbacks. In (a), the model is simulated under Hypothesis 1 (H1) of an ecological-only model, where population size of the host (S = susceptible individuals, I = infected individuals; solid lines) varies over time as a function of fixed traits (B = birth rate, β = transmission rate, γ = magnitude of transmission-virulence tradeoff, α = virulence). The model is also simulated under Hypothesis 2 (H2) of an eco-evolutionary dynamics model, where α can evolve as a function of a transmission-virulence tradeoff (β(α) = cα1/γ; dashed lines) if there is phenotypic variance V (set to 4 here). The virulence evolution is density-dependent, and includes an eco-evolutionary feedback loop: ecology (the host population density) affects evolution of virulence (selection for increased or reduced virulence; dα/dt ~ f(S)), evolution of virulence affects ecology via the number of susceptible hosts (dS/dt ~ f(I), dI/dt ~ f(α)), and this change in host population size in turn affects the selection for virulence. In (b), the model is simulated under Hypothesis 3 (H3) with interactions between evolution and ecology, but no eco-evolutionary feedback loop - virulence evolution is independent of the susceptible host population size (S), but instead depends on the same transmission-virulence tradeoff β(α) = cα1/γ; and a constant value (5×106).
-
-
-lain text and equations to describe model. Describe overall approach.
-
-### 2.1 Hypothesis 1. XXX
-Plain text and output to describe hyothesis 1.
-
 ## References
+Hagen, O., Flück, B., Fopp, F., Cabral, J. S., Hartig, F., Pontarp, M., Rangel, T. F.,& Pellissier, L. (2021). gen3sis: A general engine for eco-e volutionary simulations of the processes that shape Earth’s biodiversity. PLoS biology, 19(7), e3001340.
+
 Lion, S. (2018). Theoretical approaches in evolutionary ecology: environmental feedback as a unifying perspective. The American Naturalist, 191(1), 21-44.
 
 Luo, S., & Koelle, K. (2013). Navigating the devious course of evolution: the importance of mechanistic models for identifying eco-evolutionary dynamics in nature. The American Naturalist, 181(S1), S58-S75.
