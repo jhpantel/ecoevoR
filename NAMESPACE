@@ -3,5 +3,7 @@
 export(hostpath_evol)
 export(lk_ecoXevo)
 export(lk_eco_evo)
+export(plot_gen3sis)
+export(round_up)
 export(strsplit1)
 import(deSolve)

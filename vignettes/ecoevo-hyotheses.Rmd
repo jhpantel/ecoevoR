@@ -146,6 +146,11 @@ sim3 <- gen3sis::run_simulation(config = file.path(datapath, "config/config_sout
 
 ## Hypothesis 4: Temperature and dispersal traits evolve, dispersal trait evolves faster than temperature trait, traits correlated 0.25
 sim4 <- gen3sis::run_simulation(config = file.path(datapath, "config/config_southamerica_H4.R"),landscape = file.path(datapath, "created_landscapes"), output_directory = file.path(datapath,"output"), call_observer = 1,verbose = 0)
+
+## Plot all final richness and speciation events
+max_gam <- max(max(sim1$summary$phylo_summary[,"alive"]),max(sim2$summary$phylo_summary[,"alive"]),max(sim3$summary$phylo_summary[,"alive"]),max(sim4$summary$phylo_summary[,"alive"]))
+max_alpha <- max(max(sim1$summary$`richness-final`[,3],na.rm=T),max(sim2$summary$`richness-final`[,3],na.rm=T),max(sim3$summary$`richness-final`[,3],na.rm=T),max(sim4$summary$`richness-final`[,3],na.rm=T))
+
 ```
 
 ## References
