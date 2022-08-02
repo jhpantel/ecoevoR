@@ -21,6 +21,8 @@ library(tidyverse)
 library(ggplot2)
 library(gen3sis)
 library(raster)
+library(MASS)
+library(Matrix)
 ```
 ## 1 Overview
 Eco-evolutionary hypothesis testing is implemented by using theoretical or simulation models to compare alternative mechanistic processes that may be structuring data. We introduce two eco-evolutionary models and for each, we run simulations under parameter values or model components that match distinct eco-evolutionary hyotheses. In a separate vignette eco-evo-ABC, we describe how to use Approximate Bayesian Computing (and alternatively machine learning) to compare data generated under these alternative hypotheses to observed data (albeit such data is simulated in these examples).
@@ -59,6 +61,7 @@ h3 <- hostpath_evol(times,xstart,parms,method="eco_evo")
 ```
 
 ```{r}
+# Arrange data for ggplot lines
 out1 <- h1 %>% gather(variable,value,-time)
 out1$H <- "H1"
 out2 <- h2 %>% gather(variable,value,-time)
@@ -67,19 +70,29 @@ out3 <- h3 %>% gather(variable,value,-time)
 out3$H <- "H3"
 out <- rbind(out1,out2,out3)
 
+# Arrange data for points
+## alpha
+end <- out[out$time == 40 & out$variable == "alpha",]
+coarse <- out[(out$time == 0 | out$time == 10 | out$time == 20 | out$time == 30 | out$time == 40) & (out$variable == "S" | out$variable == "I"),]
+
 coeff <- 2*10^6
 out$value[out$variable == "alpha"] <- out$value[out$variable == "alpha"]*coeff
 
 out  %>%
   ggplot(aes(x=time,y=value,color=variable))+
   geom_line(aes(linetype=H),size=1.5)+
+  scale_linetype_manual(values=c("solid","dashed","dotted"))+
+  scale_color_manual(values=c("#FFFFFF","#d3d3d3","red","#87cfeb"))+
   theme_classic()+
   labs(x='time (yr)')+
   scale_y_continuous(
     # First y-axis
     name = "number of individuals",
     sec.axis = sec_axis(~./coeff, name="virulence")
-  )
+  )+
+  geom_point(data=coarse,aes(x=time,y=value,color=variable),size=3)+
+  geom_point(data=end,aes(x=time,y=value,color="red"),size=3)
+
 
 ```
 
@@ -96,11 +109,43 @@ In such a system, ecological and evolutionary processes combine to structure bio
 For all four hypotheses, the final alpha diversity (local species richness) and time series of some summary statistics (number of speciation and extinction events, total regional richness) are shown. These summary statistics create features that could be used for comparison to observed data to distinguish among the alternative hypotheses that may have structured observed data.
 
 ```{r}
-# H1. No evolution (V = 0)
-parms <- c(B = (10^7), mu = 1, V = 0, gam = 2, c = 3*10^-7)
-times <- seq(from=0,to=40,by=1)
-xstart <- c(S=10^7,I=1,alpha=4)
-out <- hostpath_evol(times,xstart,parms)
+## Create landscape
+#datapath <- pkgload:::shim_system.file(file.path("extdata", "Example2"), package="ecoevoR")
+datapath <- paste("/",file.path("Users", "jhpantel", "Documents", "GitHub", "ecoevoR", "inst", "extdata", "Example2"),sep="")
+setwd(datapath)
+## Create environnmental rasters bricks
+temperature_brick <- brick("input_rasters/temperature_rasters.grd")
+aridity_brick <- brick("input_rasters/aridity_rasters.grd")
+area_brick <- brick("input_rasters/area_rasters.grd")
+## Create list with environmental raster bricks
+landscapes_list <- list(temp = NULL, arid = NULL, area = NULL)
+for (i in 1:nlayers(temperature_brick)) {
+  landscapes_list$temp <- c(landscapes_list$temp, temperature_brick[[i]])
+  landscapes_list$arid <- c(landscapes_list$arid, aridity_brick[[i]])
+  landscapes_list$area <- c(landscapes_list$area, area_brick[[i]])
+}
+## Create cost function
+cost_function_water <- function(source, habitable_src, dest, habitable_dest) {
+  if (!all(habitable_src, habitable_dest)) {
+    return(2/1000)
+  } else {
+    return(1/1000)
+  }
+}
+## Create input landscape files
+gen3sis::create_input_landscape(landscapes = landscapes_list, cost_function = cost_function_water,directions = 8, output_directory = file.path(datapath,"created_landscapes"), timesteps = paste0(seq(65,0, by = -1), "Ma"), crs = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs",calculate_full_distance_matrices = F)
+
+## Hypothesis 1: Temperature trait evolves
+sim1 <- gen3sis::run_simulation(config = file.path(datapath, "config/config_southamerica_H1.R"),landscape = file.path(datapath, "created_landscapes"), output_directory = file.path(datapath,"output"), call_observer = 1,verbose = 0)
+
+## Hypothesis 2: Temperature and dispersal traits evolve, same speed
+sim2 <- gen3sis::run_simulation(config = file.path(datapath, "config/config_southamerica_H2.R"),landscape = file.path(datapath, "created_landscapes"), output_directory = file.path(datapath,"output"), call_observer = 1,verbose = 0)
+
+## Hypothesis 3: Temperature and dispersal traits evolve, dispersal trait evolves faster than temperature trait
+sim3 <- gen3sis::run_simulation(config = file.path(datapath, "config/config_southamerica_H3.R"),landscape = file.path(datapath, "created_landscapes"), output_directory = file.path(datapath,"output"), call_observer = 1,verbose = 0)
+
+## Hypothesis 4: Temperature and dispersal traits evolve, dispersal trait evolves faster than temperature trait, traits correlated 0.25
+sim4 <- gen3sis::run_simulation(config = file.path(datapath, "config/config_southamerica_H4.R"),landscape = file.path(datapath, "created_landscapes"), output_directory = file.path(datapath,"output"), call_observer = 1,verbose = 0)
 ```
 
 ## References

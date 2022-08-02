@@ -11,8 +11,14 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 Suggests: 
+    ggplot2,
     knitr,
-    rmarkdown
+    MASS,
+    Matrix,
+    raster,
+    rmarkdown,
+    tidyverse
 VignetteBuilder: knitr
 Imports: 
+    gen3sis,
     deSolve
