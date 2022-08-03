@@ -15,10 +15,13 @@ Suggests:
     knitr,
     MASS,
     Matrix,
-    raster,
     rmarkdown,
     tidyverse
 VignetteBuilder: knitr
 Imports: 
+    deSolve,
+    graphics,
+    stringr,
+    grDevices, 
     gen3sis,
-    deSolve
+    raster

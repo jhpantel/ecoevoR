@@ -35,6 +35,6 @@ datapath <- system.file(file.path("extdata", "WorldCenter"), package = "gen3sis"
 output <- readRDS(file.path(datapath, "output/config_worldcenter/sgen3sis.rds"))
 # plot output summary
 max_gam <- max(output$summary$phylo_summary[,"alive"])
-max_alpha <- max(output$summary$`richness-final`[,3],na.rm=T)
+max_alpha <- max(output$summary$`richness-final`[,3],na.rm=TRUE)
 plot_gen3sis(output,max_gam=max_gam, max_alpha=max_alpha)
 }

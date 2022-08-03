@@ -23,6 +23,9 @@ library(gen3sis)
 library(raster)
 library(MASS)
 library(Matrix)
+library(graphics)
+library(stringr)
+library(grDevices)
 ```
 ## 1 Overview
 Eco-evolutionary hypothesis testing is implemented by using theoretical or simulation models to compare alternative mechanistic processes that may be structuring data. We introduce two eco-evolutionary models and for each, we run simulations under parameter values or model components that match distinct eco-evolutionary hyotheses. In a separate vignette eco-evo-ABC, we describe how to use Approximate Bayesian Computing (and alternatively machine learning) to compare data generated under these alternative hypotheses to observed data (albeit such data is simulated in these examples).
@@ -139,19 +142,38 @@ gen3sis::create_input_landscape(landscapes = landscapes_list, cost_function = co
 sim1 <- gen3sis::run_simulation(config = file.path(datapath, "config/config_southamerica_H1.R"),landscape = file.path(datapath, "created_landscapes"), output_directory = file.path(datapath,"output"), call_observer = 1,verbose = 0)
 
 ## Hypothesis 2: Temperature and dispersal traits evolve, same speed
-sim2 <- gen3sis::run_simulation(config = file.path(datapath, "config/config_southamerica_H2.R"),landscape = file.path(datapath, "created_landscapes"), output_directory = file.path(datapath,"output"), call_observer = 1,verbose = 0)
+#sim2 <- gen3sis::run_simulation(config = file.path(datapath, "config/config_southamerica_H2.R"),landscape = file.path(datapath, "created_landscapes"), output_directory = file.path(datapath,"output"), call_observer = 1,verbose = 0)
 
 ## Hypothesis 3: Temperature and dispersal traits evolve, dispersal trait evolves faster than temperature trait
-sim3 <- gen3sis::run_simulation(config = file.path(datapath, "config/config_southamerica_H3.R"),landscape = file.path(datapath, "created_landscapes"), output_directory = file.path(datapath,"output"), call_observer = 1,verbose = 0)
+#sim3 <- gen3sis::run_simulation(config = file.path(datapath, "config/config_southamerica_H3.R"),landscape = file.path(datapath, "created_landscapes"), output_directory = file.path(datapath,"output"), call_observer = 1,verbose = 0)
 
 ## Hypothesis 4: Temperature and dispersal traits evolve, dispersal trait evolves faster than temperature trait, traits correlated 0.25
-sim4 <- gen3sis::run_simulation(config = file.path(datapath, "config/config_southamerica_H4.R"),landscape = file.path(datapath, "created_landscapes"), output_directory = file.path(datapath,"output"), call_observer = 1,verbose = 0)
-
-## Plot all final richness and speciation events
-max_gam <- max(max(sim1$summary$phylo_summary[,"alive"]),max(sim2$summary$phylo_summary[,"alive"]),max(sim3$summary$phylo_summary[,"alive"]),max(sim4$summary$phylo_summary[,"alive"]))
-max_alpha <- max(max(sim1$summary$`richness-final`[,3],na.rm=T),max(sim2$summary$`richness-final`[,3],na.rm=T),max(sim3$summary$`richness-final`[,3],na.rm=T),max(sim4$summary$`richness-final`[,3],na.rm=T))
-
+#sim4 <- gen3sis::run_simulation(config = file.path(datapath, "config/config_southamerica_H4.R"),landscape = file.path(datapath, "created_landscapes"), output_directory = file.path(datapath,"output"), call_observer = 1,verbose = 0)
 ```
+
+```{r}
+## Plot all final richness and speciation events
+#max_gam <- max(max(sim1$summary$phylo_summary[,"alive"]),max(sim2$summary$phylo_summary[,"alive"]),max(sim3$summary$phylo_summary[,"alive"]),max(sim4$summary$phylo_summary[,"alive"]))
+#max_alpha <- max(max(sim1$summary$`richness-final`[,3],na.rm=T),max(sim2$summary$`richness-final`[,3],na.rm=T),max(sim3$summary$`richness-final`[,3],na.rm=T),max(sim4$summary$`richness-final`[,3],na.rm=T))
+
+svg(filename=file.path(datapath,"output/Figure_2b.svg"),width=7,height=7)
+plot_gen3sis(sim1)
+dev.off()
+
+# svg(filename=file.path(datapath,"output/Figure_2c.svg"),width=7,height=7)
+# plot_gen3sis(sim2,max_gam=max_gam,max_alpha=max_alpha)
+# dev.off()
+# 
+# svg(filename=file.path(datapath,"output/Figure_2d.svg"),width=7,height=7)
+# plot_gen3sis(sim3,max_gam=max_gam,max_alpha=max_alpha)
+# dev.off()
+# 
+# svg(filename=file.path(datapath,"output/Figure_2e.svg"),width=7,height=7)
+# plot_gen3sis(sim4,max_gam=max_gam,max_alpha=max_alpha)
+# dev.off()
+```
+
+![info about figure](file.path(datapath,"output/Figure_2b.svg"))
 
 ## References
 Hagen, O., Flück, B., Fopp, F., Cabral, J. S., Hartig, F., Pontarp, M., Rangel, T. F.,& Pellissier, L. (2021). gen3sis: A general engine for eco-e volutionary simulations of the processes that shape Earth’s biodiversity. PLoS biology, 19(7), e3001340.
