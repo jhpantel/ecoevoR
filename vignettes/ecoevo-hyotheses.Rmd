@@ -173,10 +173,15 @@ plot_gen3sis(sim4,max_gam=max_gam,max_alpha=max_alpha)
 dev.off()
 ```
 
-![Hypothesis 1: 1 trait evolves](file.path(datapath,"output/Figure_2b.svg"))
-![Hypothesis 2: 2 traits evolve at same rate](file.path(datapath,"output/Figure_2c.svg"))
-![Hypothesis 3: trait 1 evolves slower than trait 2](file.path(datapath,"output/Figure_2c.svg"))
-![Hypothesis 4: trait 1 and 2 correlated](file.path(datapath,"output/Figure_2c.svg"))
+<embed src=file.path(datapath,"output/Figure_2b.svg") type="image/svg+xml" />
+<embed src=file.path(datapath,"output/Figure_2c.svg") type="image/svg+xml" />
+<embed src=file.path(datapath,"output/Figure_2d.svg") type="image/svg+xml" />
+<embed src=file.path(datapath,"output/Figure_2e.svg") type="image/svg+xml" />
+
+<!-- ![Hypothesis 1: 1 trait evolves](file.path(datapath,"output/Figure_2b.svg")) -->
+<!-- ![Hypothesis 2: 2 traits evolve at same rate](file.path(datapath,"output/Figure_2c.svg")) -->
+<!-- ![Hypothesis 3: trait 1 evolves slower than trait 2](file.path(datapath,"output/Figure_2d.svg")) -->
+<!-- ![Hypothesis 4: trait 1 and 2 correlated](file.path(datapath,"output/Figure_2e.svg")) -->
 
 ## References
 Hagen, O., Flück, B., Fopp, F., Cabral, J. S., Hartig, F., Pontarp, M., Rangel, T. F.,& Pellissier, L. (2021). gen3sis: A general engine for eco-e volutionary simulations of the processes that shape Earth’s biodiversity. PLoS biology, 19(7), e3001340.
