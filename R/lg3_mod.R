@@ -2,10 +2,10 @@
 #'
 #' Equations for Leslie-gower population growth (discrete-time Lotka-Volterra) models for three species. Population growth is modelled as population mean fitness as per Gomulkiewicz & Holt 1995. These formulas calculate the population's maximum growth rate (with a trait value at the local environmental optimum), the distance from the optimal trait value and evolutionary inertia of trait given phenotypic variation, and the change in population size N from one time step to the next given intra- and interspecific interaction strength.
 #'
-#' The model is a discrete time, stochastic, quantitative genetic model of evolutionary rescue (Gomulkiewicz & Holt 1995), with some modifications. Populations experience logistic growth: $N_t+1 = N_t + \lambda N_t (\frac{1-N_t}{K})$ and the population growth rate $\lambda$ is the absolute mean fitness of a population in generation *t*. Mean fitness is determined by a quantitative trait *x* as follows:
-#' $ \lambda = \hat{W}e^ \frac{-[(\frac{w+(1-h^2)P} {P+w})(E-x_t)]^2}{2(P+w)} $
+#' The model is a discrete time, stochastic, quantitative genetic model of evolutionary rescue (Gomulkiewicz & Holt 1995), with some modifications. Populations experience logistic growth: \eqn{N_t+1 = N_t + \lambda N_t ((1-N_t)/K)} and the population growth rate \lambda is the absolute mean fitness of a population in generation *t*. Mean fitness is determined by a quantitative trait *x* as follows:
+#' \eqn{\lambda = \hat{W}e^{w+(1-h^2)P / (P+w)(E-x_t)]^2}{2(P+w)}}
 #'
-#' where $ \hat{W} = W_max sqrt(\frac{w}{P + w}) $, $ W_max $ is the absolute fitness when the phenotype *x* equals the local environmental optimum trait value *E*, *w* is the width of the Gaussian fitness function (which determines the strength of selection), *P* is the width of the distribution of the phenotype *x*, $h^2$ is the heritability of the phenotype *x*, and *x_t* is the population's mean phenotype at time *t*.
+#' where \eqn{\hat{W} = W_max sqrt(\frac{w}{P + w})}, *W_max* is the absolute fitness when the phenotype *x* equals the local environmental optimum trait value *E*, *w* is the width of the Gaussian fitness function (which determines the strength of selection), *P* is the width of the distribution of the phenotype *x*, $h^2$ is the heritability of the phenotype *x*, and *x_t* is the population's mean phenotype at time *t*.
 #'
 #' @param n A vector with the population size for all three species (N1, N2, N3) at time t
 #' @param E A scalar with the local environmental optimum trait value E

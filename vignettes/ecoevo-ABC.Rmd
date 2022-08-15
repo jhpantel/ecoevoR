@@ -18,4 +18,143 @@ knitr::opts_chunk$set(
 library(ecoevor)
 ```
 ## 1 Overview
-Lotka-Volterra 3 species competition
+The goal of this vignette is to illustrate how to use Approximate Bayesian Computing (ABC, Beaumont 2010; Csilléry et al. 2012) to (i) assign posterior probabilities to an observed dataset for each of a set of alternative hypothesized models and (ii) estimate unmeasured parameter values for the most likely model to have produced the observed data. For an example observed dataset, we simulate population and trait dynamics in a 3-species model of growth and competition (a Leslie-Gower model, which is a discrte-time Lotka-Volterra model). In this model, we also include the possibility that the population growth rate can evolve (using a model of evolutionary rescue introduced by Gomulkiewicz & Holt 1995). The model is as follows:
+
+$ N_{i,t+1} =\frac{\hat{W}e^ \frac{-[(\frac{w+(1-h^2)P} {P+w})(E-x_t)]^2}{2(P+w)}N_{i,t}} {1 + \alpha_{ii}N_{i,t} + \sum_j \alpha_{ij}N_{j,t}} $
+
+where $N_i,t$ is the population size of a species at time *t*, $ \hat{W} $ is calculated as $ \hat{W}=W_{max}\sqrt(\frac{w}{P+w}) $, $W_max$ is the species' maximum per-capita growth rate, *w* is the width of the Gaussian fitness function (which determines the strength of selection), *P* is is the width of the distribution of the phenotype *x*, $h^2$ is the heritability of the trait *x*, *E* is the local environmental optimum trait value, $x_t$ is the trait value of the species at time *t*, $\alpha_{ii}$ is the intraspecific competition coefficient and $\alpha_{ij}$ is the interspecific competition coefficient.
+
+## 2 Simulation
+The function *lg3_mod* simulates population growth for all 3 species in a single time-step, and the function *LV_evol* simulates population growth for all 3 species across a number of user-specified time-steps. Our goal is to simulate population dynamics for two scenarios, in the absence of trait evolution and with evolution in a trait value for a single species. We will then take the model-generated data from the evolving species model, and use ABC to (i) determine which hypothesized model produced this data and (ii) estimate the model parameters used to produce this 'observed' data. To imitate a more realistic use-case of comparing observed to model-generated data, instead of using the full time series of population size and evolving trait data, we will use population size data collected every 14 days and trait data from the end of the experiment ($t_{300}$).
+
+To simulate data under the two scenarios (no evolution, $h^2 = 0$ and evolution, $h_2^2 = 0.25$):
+
+```{r}
+# Representing sampling every 14 days
+days <- seq(1,300,by=14)
+
+## Case 1: 3 species coexist, none evolve
+# Alphas from Gallien et al. 2017, The effects of intransitive competition on coexistence
+fix_parm.1 <- c(a11 = 0.000666, a12 = 0.000111, a13 = 0.001000,  a21 = 0.001000, a22 = 0.000666, a23 = 0.000111,  a31 = 0.000111, a32 = 0.001000, a33 = 0.000666,  wmax = 2, w = 0.5, P = 0.025,  h21 = 0, h22 = 0, h23 = 0)
+sim1 <- LV_evol(N0=c(10, 10, 10),x0=c(0.4,0.5,0.6),E=.1,time_points=300,fix_parm.1)
+abc_obs_summ.1 <- c(as.vector(sim1[days,c(7:9)]),sim1[300,10:12])
+matplot(1:300, sim1[,7:9], type = "l", xlab="time",ylab="N")
+
+## Case 2: 3 species coexist, species 2 evolves
+fix_parm.2 <- fix_parm.1
+fix_parm.2[14] <- 0.25
+sim2 <- LV_evol(N0=c(10, 10, 10),x0=c(0.4,0.5,0.6),E=.1,time_points=300,fix_parm.2)
+abc_obs_summ.2 <- c(as.vector(sim2[days,c(7:9)]),sim2[300,10:12])
+matplot(1:300, sim2[,7:9], type = "l", xlab="time",ylab="N")
+```
+
+## 3 Fitting observed data to model via ABC
+The next goal is to use the function *rand_sim* to generate population and trait time series under two alternative model hypotheses (without and with trait evolution), where parameter values are drawn from prior distributions. The ABC algorithm is as follows:
+
+If the model parameters to be estimated are θ and the observed data is x, then the steps for ABC are: 
+  *  (i) sample a candidate parameter vector $θ^*$ from a proposed prior distribution π(θ)
+  * (ii) simulate a dataset $x^*$ from the model described by a conditional probability distribution $f(x|θ^*)$
+  * (iii) compare the simulated dataset $x^*$ to the observed data $x_0$, using a distance function *d* and a tolerance ε: if $d(x_0, x^*) ≤ ε$, accept $θ^*$*
+
+Given the computational inefficiency of defining a single distance function  $d(x_0, x^*)$ for the entirety of the dataset, it is instead possible to choose a low-dimensional set of summary statistics that capture information about the data. In this instance, we use the population size for all 3 species every 2 weeks and the $t_{300}$ trait values for all 3 species as the summary statistics, that will be compared to model-generated values via ABC.
+
+### Step 1. Match alternative hypotheses to simulation models.
+We will use 2 alternative models, where there is no trait evolution ($h^2 = 0$) and where trait evolution is possible ($h^2 > 0$). These are implemented as model choices in the function *rand_sim*. We will use 100,000 simulations. Because these can be time-consuming to run, we show the code here for the simulations and for re-arranging the data for the ABC analysis (Step 2). However, the actual variables themselves are included as an RData object *abc_lv* in the ecoevoR package. If the number of simulations leads to exceeding system memory, reduce *sim_num* below.
+
+```{r eval=FALSE}
+# To run simulations in their entirety
+## Using beginning and end-point trait values
+sim_num <- 100000
+m1 <- rand_sim(n=sim_num,x0=c(0.4,0.5,0.6))
+m2 <- rand_sim(n=sim_num,evol=TRUE,x0=c(0.4,0.5,0.6))
+
+### For models with x0 and x300 trait data
+## vector of simulation parameter values, dimensions are [mod x n] x 15
+abc_sim_parm <- rbind(m1$parm_record,m2$parm_record)
+## vector of simulation summary statistics, dimensions are [mod x n] x 69
+dims <- c((dim(m1$pop_record)[1] * 2),69)
+abc_sim_summ <- array(NA,dim=dims,dimnames=list(NULL,c(paste("s1.",days,sep=""),paste("s2.",days,sep=""),paste("s3.",days,sep=""),"s1.x.300","s2.x.300","s3.x.300")))
+
+# Fixed x0
+for(i in 1:(dims[1] / 2)){
+  abc_sim_summ[i,] <- c(as.vector(m1$pop_record[i,days,c(7:9)]),m1$pop_record[i,300,10:12])
+}
+
+for(i in ((dims[1]/2) + 1):dims[1]){
+  abc_sim_summ[i,] <- c(as.vector(m2$pop_record[(i - (dims[1]/2)),days,c(7:9)]),m2$pop_record[(i - (dims[1]/2)),300,10:12])
+}
+rm(list=c("m1","m2"))
+
+## Using only end-point trait values
+m3 <- rand_sim(n=sim_num)
+m4 <- rand_sim(n=sim_num,evol=TRUE)
+
+### For models with only x300 trait data
+abc_sim_parm_x0 <- rbind(m3$parm_record,m4$parm_record)
+dims <- c((dim(m3$pop_record)[1] * 2),69)
+abc_sim_summ_x0 <- array(NA,dim=dims,dimnames=list(NULL,c(paste("s1.",days,sep=""),paste("s2.",days,sep=""),paste("s3.",days,sep=""),"s1.x.300","s2.x.300","s3.x.300")))
+
+# Random x0
+for(i in 1:(dims[1] / 2)){
+  abc_sim_summ_x0[i,] <- c(as.vector(m3$pop_record[i,days,c(7:9)]),m3$pop_record[i,300,10:12])
+}
+
+for(i in ((dims[1]/2) + 1):dims[1]){
+  abc_sim_summ_x0[i,] <- c(as.vector(m4$pop_record[(i - (dims[1]/2)),days,c(7:9)]),m4$pop_record[(i - (dims[1]/2)),300,10:12])
+}
+
+rm(list=c("m3","m4"))
+
+## vector of simulation models, dimensions are [mod x n] x 69
+abc_sim_mods <- rep(c("no_evol","evol"),each=sim_num)
+
+## Save all relevant variables into a list (same as found in ecoevoR package data)
+abc_lv <- list(abc_sim_parm=abc_sim_parm,abc_sim_parm_x0=abc_sim_parm_x0,abc_sim_summ=abc_sim_summ,abc_sim_summ_x0=abc_sim_summ_x0,abc_sim_mods=abc_sim_mods)
+rm(list=setdiff(ls(), "abc_lv"))
+```
+### Step 2. Prepare ABC
+To determine whether the summary statistics are sufficient for identifying the model that generated a dataset, we first use ABC to re-classify the generating model for simulated datasets. We demonstrate this process with (i) a dataset with population size every 14 days and the beginning and end trait values ($x_0$ and $x_{300}$) and (ii) a dataset with population size every 14 days and the end trait values ($x_{300}$). To prepare the ABC, we need a vector of model parameter values (for all simulations across both models) and associated summary statistics. These are generated in the code in Step 1, and those variables were saved in the accompanying dataset *abc_lv.rda*.
+
+```{r}
+# Plot of distribution of h^2 values for Species 1 across 100,000 simulations with trait evolution
+plot(density(abc_lv$abc_sim_parm_x0[100001:200000,13]),main="",xlab="heritability",ylab="density")
+```
+
+### Step 3. Run ABC
+XXX
+
+```{r}
+## Load variables from list into R environment
+list2env(abc_lv,globalenv())
+## i. Model cross-validation - 
+#cv.modsel <- cv4postpr(abc_sim_mods, abc_sim_summ, nval=5, tol=0.075, method="rejection")
+#s <- summary(cv.modsel)
+#plot(cv.modsel, names.arg=c("No Evolution", "Evolution"))
+
+#cv.modsel.x0 <- cv4postpr(abc_sim_mods, abc_sim_summ_x0, nval=5, tol=0.075, method="rejection")
+#s <- summary(cv.modsel.x0)
+# Neural net
+#plot(cv.modsel.x0, names.arg=c("No Evolution", "Evolution"))
+#cv.modsel.x0 <- cv4postpr(abc_sim_mods, abc_sim_summ_x0, nval=5, tol=0.075, method="neuralnet")
+#s <- summary(cv.modsel.x0)
+#plot(cv.modsel.x0, names.arg=c("No Evolution", "Evolution"))
+```
+
+
+
+
+
+
+
+
+
+## References
+Beaumont, M. A. Approximate Bayesian Computation in Evolution and Ecology. Annual Review of Ecology, Evolution, and Systematics 41, 379–406 (2010)
+
+Csilléry, K., François, O. & Blum, M. G. B. abc: an R package for approximate Bayesian computation (ABC). Methods Ecol. Evol. 3, 475–479 (2012)
+
+Gallien, L., Zimmermann, N. E., Levine, J. M., & Adler, P. B. The effects of intransitive competition on coexistence. Ecology Letters, 20(7), 791-800. (2017)
+
+Gomulkiewicz, R. & Holt, R. D. When does evolution by natural selection prevent extinction? Evolution 49, 201–207 (1995)
+
+

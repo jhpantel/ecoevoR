@@ -41,26 +41,26 @@ rand_sim <- function(N0=c(10, 10, 10),x0=NULL,E=.1,time_points=300,n,evol=FALSE)
   for(g in 1:n){
     print(paste("Running sim ",g," out of ",n,sep=""))
     # Draws from priors
-    x0 <- runif(3)
-    a11 <- rbeta(1,0.25,10)
-    a12 <- rbeta(1,0.25,10)
-    a13 <- rbeta(1,0.25,10)
-    a21 <- rbeta(1,0.25,10)
-    a22 <- rbeta(1,0.25,10)
-    a23 <- rbeta(1,0.25,10)
-    a31 <- rbeta(1,0.25,10)
-    a32 <- rbeta(1,0.25,10)
-    a33 <- rbeta(1,0.25,10)
+    x0 <- stats::runif(3)
+    a11 <- stats::rbeta(1,0.25,10)
+    a12 <- stats::rbeta(1,0.25,10)
+    a13 <- stats::rbeta(1,0.25,10)
+    a21 <- stats::rbeta(1,0.25,10)
+    a22 <- stats::rbeta(1,0.25,10)
+    a23 <- stats::rbeta(1,0.25,10)
+    a31 <- stats::rbeta(1,0.25,10)
+    a32 <- stats::rbeta(1,0.25,10)
+    a33 <- stats::rbeta(1,0.25,10)
 
-    w <- rgamma(1,.25,.25)
+    w <- stats::rgamma(1,.25,.25)
     #w <- 0.5
     P <- 0.05*w
     if (evol==FALSE){
       h21 = h22 = h23 = 0
     } else {
-      h21 <- runif(1,0,1)
-      h22 <- runif(1,0,1)
-      h23 <- runif(1,0,1)
+      h21 <- stats::runif(1,0,1)
+      h22 <- stats::runif(1,0,1)
+      h23 <- stats::runif(1,0,1)
     }
 
     parms <- c(a11 = a11, a12 = a12, a13 = a13,

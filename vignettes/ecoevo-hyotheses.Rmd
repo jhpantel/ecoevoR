@@ -26,12 +26,13 @@ library(Matrix)
 library(graphics)
 library(stringr)
 library(grDevices)
+library(stats)
 ```
 ## 1 Overview
 Eco-evolutionary hypothesis testing is implemented by using theoretical or simulation models to compare alternative mechanistic processes that may be structuring data. We introduce two eco-evolutionary models and for each, we run simulations under parameter values or model components that match distinct eco-evolutionary hyotheses. In a separate vignette eco-evo-ABC, we describe how to use Approximate Bayesian Computing (and alternatively machine learning) to compare data generated under these alternative hypotheses to observed data (albeit such data is simulated in these examples).
 
 ## 2 Example 1. pathogen-virulence model
-In Figure 2 of Pantel & Becks 202x, we discuss a host-pathogen model of eco-evolutionary dynamics described in Luo & Koelle (2013). The model equations are given as:
+In Figure 2 of PaHntel & Becks 202x, we discuss a host-pathogen model of eco-evolutionary dynamics described in Luo & Koelle (2013). The model equations are given as:
 
 $$ \frac{dS}{dt} ={B - \beta(\alpha)SI - \mu S} $$
 $$ \frac{dI}{dt} ={\beta(\alpha)SI - (\mu + \alpha) I} $$
