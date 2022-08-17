@@ -150,12 +150,8 @@ abc_lv[[8]] <- cv.modsel.x0.nn
 names(abc_lv)[8] <- "cv.modsel.x0.nn"
 rm(list=setdiff(ls(), "abc_lv"))
 ```
-
-```{r}
-
-```
 Now we can use the simulations to classify the observed datasets (generated in Step 1), generating posterior probabilities for each of the two alternative hypotheses (H1: no evolution, H2: evolution). We first compare the rejection and neuralnet methods, for the data with the known x0 trait value and the unknown x0 trait value.
-```{r, warning=FALSE,message=FALSE}
+```{r, warning=FALSE,message=FALSE,results='hide'}
 ## Load variables from list into R environment
 list2env(abc_lv,globalenv())
 ## i. Calculate the posterior probabilities of each of the two models
@@ -167,32 +163,34 @@ modsel.1a <- abc::postpr(abc_obs_summ["abc_obs_summ.1",],abc_sim_mods,abc_sim_su
 modsel.1b <- abc::postpr(abc_obs_summ["abc_obs_summ.1",],abc_sim_mods,abc_sim_summ,tol=0.1,method="neuralnet")
 modsel.2a <- abc::postpr(abc_obs_summ["abc_obs_summ.2",],abc_sim_mods,abc_sim_summ,tol=0.05,method="rejection")
 modsel.2b <- abc::postpr(abc_obs_summ["abc_obs_summ.2",],abc_sim_mods,abc_sim_summ,tol=0.05,method="neuralnet")
+```
+```{r}
 summary(modsel.1a)
 summary(modsel.1b)
 summary(modsel.2a)
 summary(modsel.2b)
-
 ## Needed the neuralnet to predict correct model for evolution, but it worked.
 ```
 We can see that the neural network model performed well in estimating the posterior probability that the summary statistics for our observed dataset (abc_obs_summ.2), produced by a model with trait evolution for species 2, was in fact produced by the model with trait evolution ($h^2 > 0$). However, that was the dataset where the known values of the trait at the beginning of the observed period was known (above, `m2 <- rand_sim(n=sim_num,evol=TRUE,x0=c(0.4,0.5,0.6))`, indicating the simulation was run with the known $x_0$ trait values). To simulate how ABC performs in model selection when we have less information, we compare our observed data *abc_obs_summ.1* to the summary statistics produced by two alternative models when the initial trait value is unknown (above, `m4 <- rand_sim(n=sim_num,evol=TRUE)`, indicating that the simulation was run with randomly chosen $x_0$ trait values). This is a more difficult task, and even the neural network fails to produce a posterior prediction for which model (no evolution, evolution) produced the observed data.
 
-```{r, warning=FALSE,message=FALSE}
+```{r, warning=FALSE,message=FALSE,results='hide'}
 ## Using random x0 and known x300
 modsel.3a <- abc::postpr(abc_obs_summ["abc_obs_summ.1",],abc_sim_mods,abc_sim_summ_x0,tol=0.05,method="rejection")
 modsel.3b <- abc::postpr(abc_obs_summ["abc_obs_summ.1",],abc_sim_mods,abc_sim_summ_x0,tol=0.1,method="neuralnet")
 modsel.4a <- abc::postpr(abc_obs_summ["abc_obs_summ.2",],abc_sim_mods,abc_sim_summ_x0,tol=0.05,method="rejection")
 modsel.4b <- abc::postpr(abc_obs_summ["abc_obs_summ.2",],abc_sim_mods,abc_sim_summ_x0,tol=0.05,method="neuralnet")
+```
+```{r}
 summary(modsel.3a)
 summary(modsel.3b)
 summary(modsel.4a)
 summary(modsel.4b)
 ```
-
 In this instance, ABC does well to accurately classify the observed data was produced by the model with evolution when we provide $x_0$ and $x_{300}$. When we only consider the end-point $x_{300}$ trait data, ABC cannot clearly distinguish the most likely model.
 
 We take an additional step, where we limit comparison of the observed data to only simulation model results where all 3 species persisted (as is seen in the observed data).
 
-```{r, warning=FALSE,message=FALSE}
+```{r, warning=FALSE,message=FALSE,results='hide'}
 ## Using only sims with 3 species persisting
 sub3_evol_summ_x0 <- abc_sim_summ_x0[abc_sim_summ_x0[,22] > 0 & abc_sim_summ_x0[,44] > 0 & abc_sim_summ_x0[,66] > 0,]
 idx <- which(abc_sim_summ_x0[,22] > 0 & abc_sim_summ_x0[,44] > 0 & abc_sim_summ_x0[,66] > 0)
@@ -202,11 +200,16 @@ modsel.5a <- abc::postpr(abc_obs_summ["abc_obs_summ.1",],sub_abc_sim_mods,sub3_e
 modsel.5b <- abc::postpr(abc_obs_summ["abc_obs_summ.1",],sub_abc_sim_mods,sub3_evol_summ_x0,tol=0.1,method="neuralnet")
 modsel.6a <- abc::postpr(abc_obs_summ["abc_obs_summ.2",],sub_abc_sim_mods,sub3_evol_summ_x0,tol=0.05,method="rejection")
 modsel.6b <- abc::postpr(abc_obs_summ["abc_obs_summ.2",],sub_abc_sim_mods,sub3_evol_summ_x0,tol=0.05,method="neuralnet")
+```
+```{r}
 summary(modsel.5a)
 summary(modsel.5b)
 summary(modsel.6a)
 summary(modsel.6b)
 ```
+
+
+
 In this instance the neural network performed much better, with a posterior probability of 0.89 that the summary statistics (with only the $x_{300}$ trait values) matched to the model with trait evolution possible ($h^2>0$).
 
 ## 4 Visualizing steps for ABC
@@ -386,15 +389,14 @@ for(i in 1:16){
 dev.off()
 
 ######## Figure 2d. Model posterior probabilities ########
+# Note that this value can vary each time the ABC is re-run
 summary(modsel.6b)
 
-
-## Figure 2e. Plots of posterior parameter distributions
+######## Figure 2e. Plots of posterior parameter distributions ########
 # Using only the 'evol' model, limiting to 3 total species
+sub3_evol_summ_x0 <- abc_sim_summ_x0[abc_sim_summ_x0[,22] > 0 & abc_sim_summ_x0[,44] > 0 & abc_sim_summ_x0[,66] > 0,]
 
-
-modsel.6b <- abc::postpr(abc_obs_summ["abc_obs_summ.2",],sub_abc_sim_mods,sub3_evol_summ_x0,tol=0.05,method="neuralnet")
-
+sub3_evol_parm_x0 <- abc_sim_parm_x0[abc_sim_summ_x0[,22] > 0 & abc_sim_summ_x0[,44] > 0 & abc_sim_summ_x0[,66] > 0,]
 
 summ_for_abc <- sub3_evol_summ_x0[sub_abc_sim_mods=="evol",]
 parm_for_abc <- sub3_evol_parm_x0[sub_abc_sim_mods=="evol",]
@@ -402,7 +404,7 @@ parm_for_abc <- sub3_evol_parm_x0[sub_abc_sim_mods=="evol",]
 ## heritability
 res_h2 <- abc(target=abc_obs_summ["abc_obs_summ.2",],param=parm_for_abc[,c("h21","h22","h23")],sumstat=summ_for_abc,tol=0.05, method="neuralnet")
 #plot(res_h2,param=parm_for_abc[,c("h21","h22","h23")],true=c(0,.25,0))
-scale <- function(den){
+dscale <- function(den){
   return(den$y / max(den$y))
 }
 d1 <- density(res_h2$unadj.values[,1])

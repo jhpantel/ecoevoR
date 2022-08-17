@@ -28,7 +28,7 @@
   <path d="M 25 760.753906 L 36 760.753906 L 36 980 L 25 980 Z M 25 760.753906 "/>
 </clipPath>
 </defs>
-<g id="surface61">
+<g id="surface31">
 <rect x="0" y="0" width="1008" height="1008" style="fill:rgb(100%,100%,100%);fill-opacity:1;stroke:none;"/>
 <path style="fill:none;stroke-width:5.25;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(74.509804%,74.509804%,74.509804%);stroke-opacity:1;stroke-miterlimit:10;" d="M 27.636719 224.472656 L 37.910156 221.65625 L 48.183594 221.621094 L 243.371094 221.621094 "/>
 <path style="fill:none;stroke-width:5.25;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(52.941176%,80.784314%,92.156863%);stroke-opacity:1;stroke-miterlimit:10;" d="M 27.636719 224.46875 L 37.910156 218.453125 L 48.183594 192.722656 L 58.457031 144.261719 L 68.730469 121.679688 L 79.003906 117.328125 L 89.277344 116.675781 L 99.546875 116.578125 L 243.371094 116.578125 "/>
