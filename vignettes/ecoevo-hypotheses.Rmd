@@ -27,6 +27,7 @@ library(graphics)
 library(stringr)
 library(grDevices)
 library(stats)
+library(here)
 ```
 ## 1 Overview
 Eco-evolutionary hypothesis testing is implemented by using theoretical or simulation models to compare alternative mechanistic processes that may be structuring data. We introduce two eco-evolutionary models and for each, we run simulations under parameter values or model components that match distinct eco-evolutionary hyotheses. In a separate vignette eco-evo-ABC, we describe how to use Approximate Bayesian Computing (and alternatively machine learning) to compare data generated under these alternative hypotheses to observed data (albeit such data is simulated in these examples).
@@ -113,14 +114,14 @@ In such a system, ecological and evolutionary processes combine to structure bio
 For all four hypotheses, the final alpha diversity (local species richness) and time series of some summary statistics (number of speciation and extinction events, total regional richness) are shown. These summary statistics create features that could be used for comparison to observed data to distinguish among the alternative hypotheses that may have structured observed data.
 
 ```{r echo = T, results = 'hide'}
-## Create landscape
-#datapath <- pkgload:::shim_system.file(file.path("extdata", "Example2"), package="ecoevoR")
-datapath <- paste("/",file.path("Users", "jhpantel", "Documents", "GitHub", "ecoevoR", "inst", "extdata", "Example2"),sep="")
-setwd(datapath)
+datapath <- here::here("inst","extdata", "Example2")
+#datapath <- file.path("extdata", "Example2")
+#datapath <- paste("/",file.path("Users", "jhpantel", "Documents", "GitHub", "ecoevoR", "inst", "extdata", "Example2"),sep="")
+#setwd(datapath)
 ## Create environnmental rasters bricks
-temperature_brick <- brick("input_rasters/temperature_rasters.grd")
-aridity_brick <- brick("input_rasters/aridity_rasters.grd")
-area_brick <- brick("input_rasters/area_rasters.grd")
+temperature_brick <- brick(paste(datapath,"/input_rasters/temperature_rasters.grd",sep=""))
+aridity_brick <- brick(paste(datapath,"/input_rasters/aridity_rasters.grd",sep=""))
+area_brick <- brick(paste(datapath,"/input_rasters/area_rasters.grd",sep=""))
 ## Create list with environmental raster bricks
 landscapes_list <- list(temp = NULL, arid = NULL, area = NULL)
 for (i in 1:nlayers(temperature_brick)) {
