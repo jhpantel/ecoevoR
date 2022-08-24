@@ -2,7 +2,7 @@
 title: "ecoevo-hypotheses"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{ecoevo-hyotheses}
+  %\VignetteIndexEntry{ecoevo-hypotheses}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -158,32 +158,32 @@ sim4 <- gen3sis::run_simulation(config = file.path(datapath, "config/config_sout
 max_gam <- max(max(sim1$summary$phylo_summary[,"alive"]),max(sim2$summary$phylo_summary[,"alive"]),max(sim3$summary$phylo_summary[,"alive"]),max(sim4$summary$phylo_summary[,"alive"]))
 max_alpha <- max(max(sim1$summary$`richness-final`[,3],na.rm=T),max(sim2$summary$`richness-final`[,3],na.rm=T),max(sim3$summary$`richness-final`[,3],na.rm=T),max(sim4$summary$`richness-final`[,3],na.rm=T))
 
-svg(filename=file.path(datapath,"output/Figure_2b.svg"),width=7,height=7)
+pdf(filename=file.path(datapath,"output/Figure_2b.pdf"),width=7,height=7)
 plot_gen3sis(sim1,max_gam = max_gam,max_alpha = max_alpha)
 dev.off()
 
-svg(filename=file.path(datapath,"output/Figure_2c.svg"),width=7,height=7)
+pdf(filename=file.path(datapath,"output/Figure_2c.pdf"),width=7,height=7)
 plot_gen3sis(sim2,max_gam=max_gam,max_alpha=max_alpha)
 dev.off()
 
-svg(filename=file.path(datapath,"output/Figure_2d.svg"),width=7,height=7)
+pdf(filename=file.path(datapath,"output/Figure_2d.pdf"),width=7,height=7)
 plot_gen3sis(sim3,max_gam=max_gam,max_alpha=max_alpha)
 dev.off()
 
-svg(filename=file.path(datapath,"output/Figure_2e.svg"),width=7,height=7)
+pdf(filename=file.path(datapath,"output/Figure_2e.pdf"),width=7,height=7)
 plot_gen3sis(sim4,max_gam=max_gam,max_alpha=max_alpha)
 dev.off()
 ```
 
-<embed src=file.path(datapath,"output/Figure_2b.svg") type="image/svg+xml" />
+<!-- <embed src=file.path(datapath,"output/Figure_2b.pdf") type="image/svg+xml" />
 <embed src=file.path(datapath,"output/Figure_2c.svg") type="image/svg+xml" />
 <embed src=file.path(datapath,"output/Figure_2d.svg") type="image/svg+xml" />
-<embed src=file.path(datapath,"output/Figure_2e.svg") type="image/svg+xml" />
+<embed src=file.path(datapath,"output/Figure_2e.svg") type="image/svg+xml" /> -->
 
-<!-- ![Hypothesis 1: 1 trait evolves](file.path(datapath,"output/Figure_2b.svg")) -->
-<!-- ![Hypothesis 2: 2 traits evolve at same rate](file.path(datapath,"output/Figure_2c.svg")) -->
-<!-- ![Hypothesis 3: trait 1 evolves slower than trait 2](file.path(datapath,"output/Figure_2d.svg")) -->
-<!-- ![Hypothesis 4: trait 1 and 2 correlated](file.path(datapath,"output/Figure_2e.svg")) -->
+![Hypothesis 1: 1 trait evolves](file.path(datapath,"output/Figure_2b.pdf"))
+![Hypothesis 2: 2 traits evolve at same rate](file.path(datapath,"output/Figure_2c.pdf"))
+![Hypothesis 3: trait 1 evolves slower than trait 2](file.path(datapath,"output/Figure_2d.pdf"))
+![Hypothesis 4: trait 1 and 2 correlated](file.path(datapath,"output/Figure_2e.pdf"))
 
 ## References
 Hagen, O., Flück, B., Fopp, F., Cabral, J. S., Hartig, F., Pontarp, M., Rangel, T. F.,& Pellissier, L. (2021). gen3sis: A general engine for eco-e volutionary simulations of the processes that shape Earth’s biodiversity. PLoS biology, 19(7), e3001340.
