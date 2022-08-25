@@ -22,7 +22,7 @@ library(here)
 ## 1 Overview
 The goal of this vignette is to illustrate how to use Approximate Bayesian Computing (ABC, Beaumont 2010; Csilléry et al. 2012) to (i) assign posterior probabilities to an observed dataset for each of a set of alternative hypothesized models and (ii) estimate unmeasured parameter values for the most likely model to have produced the observed data. For an example observed dataset, we simulate population and trait dynamics in a 3-species model of growth and competition (a Leslie-Gower model, which is a discrte-time Lotka-Volterra model). In this model, we also include the possibility that the population growth rate can evolve (using a model of evolutionary rescue introduced by Gomulkiewicz & Holt 1995). The model is as follows:
 
-$ N_{i,t+1} =\frac{\hat{W}e^ \frac{-[(\frac{w+(1-h^2)P} {P+w})(E-x_t)]^2}{2(P+w)}N_{i,t}} {1 + \alpha_{ii}N_{i,t} + \sum_j \alpha_{ij}N_{j,t}} $
+$$ N_{i,t+1} =\frac{\hat{W}e^ \frac{-[(\frac{w+(1-h^2)P} {P+w})(E-x_t)]^2}{2(P+w)}N_{i,t}} {1 + \alpha_{ii}N_{i,t} + \sum_j \alpha_{ij}N_{j,t}} $$
 
 where $N_i,t$ is the population size of a species at time *t*, $ \hat{W} $ is calculated as $ \hat{W}=W_{max}\sqrt(\frac{w}{P+w}) $, $W_max$ is the species' maximum per-capita growth rate, *w* is the width of the Gaussian fitness function (which determines the strength of selection), *P* is is the width of the distribution of the phenotype *x*, $h^2$ is the heritability of the trait *x*, *E* is the local environmental optimum trait value, $x_t$ is the trait value of the species at time *t*, $\alpha_{ii}$ is the intraspecific competition coefficient and $\alpha_{ij}$ is the interspecific competition coefficient.
 
@@ -221,7 +221,7 @@ datapath <- here::here("inst","extdata", "Box1")
 #setwd(datapath)
 
 ######## Box1a. Observed summary stats ########
-pdf(filename=file.path(datapath,"Box_1a.pdf"),width=12,height=7)
+pdf(file=file.path(datapath,"Box_1a.pdf"),width=12,height=7)
 par(mfrow=c(1,2),mar = c(2, 2, 0.5, 0))
 matplot(1:300,sim1[,7:9], type="l",xlab="time",ylab="N", col=c("grey","skyblue","orange"), lty=1, lwd=3, ann=F, axes=F)
 axis(1,at=c(0,50,100,150,200,250,300),lwd=2)
@@ -264,7 +264,7 @@ plotunif <- function(x, min = 0, max = 1, lwd = 1, col = 1, ...) {
   points(0, min, pch = 21, col = col, bg = "white")
   points(max, min, pch = 21, col = col, bg = "white")
 }
-pdf(filename=file.path(datapath,"Box_1b.1.pdf"),width=7,height=7)
+pdf(file=file.path(datapath,"Box_1b.1.pdf"),width=7,height=7)
 plotunif(min = 0, max = 1, lwd = 12, col = "skyblue", main = "")
 dev.off()
 
@@ -272,7 +272,7 @@ dev.off()
 min <- 0
 max <- 0.00000000000001
 x <- seq(min - 0.5, max + 0.5, 0.01)
-pdf(filename=file.path(datapath,"Box_1b.2.pdf"),width=7,height=7)
+pdf(file=file.path(datapath,"Box_1b.2.pdf"),width=7,height=7)
 plot(x, dunif(x, min = min, max = max),
      xlim = c(0 - 0.25, 1 + 0.25), type = "l",
      lty = 0, ylab = "f(x)",yaxt="n",xlab=expression("h"^2), ann=F, axes=F)
@@ -291,7 +291,7 @@ dev.off()
 ## alpha / interaction strength terms
 p = seq(0,1, length=100)
 db <- dbeta(p, 0.25, 10)
-pdf(filename=file.path(datapath,"Box_1b.3.pdf"),width=7,height=7)
+pdf(file=file.path(datapath,"Box_1b.3.pdf"),width=7,height=7)
 plot(p[2:99],(db[2:99] / max(db[2:99])), ylab="density", type ="l", col="skyblue", lwd=12, xlab ="α", ann=F, axes=F)
 axis(1,at=c(-0.5,0.0,0.2,0.4,0.6,0.8,1.0,1.5),labels=c("","0.0","0.2","0.4","0.6","0.8","1.0",""),lwd=7)
 axis(2,at=c(0,0.2,0.4,0.6,0.8,1),lwd=7)
@@ -301,7 +301,7 @@ dev.off()
 p = seq(0,15, length=2000)
 dg <- dgamma(p, 0.25, 0.25)
 z_range <- seq(-1,1,.001)
-pdf(filename=file.path(datapath,"Box_1b.4.pdf"),width=7,height=7)
+pdf(file=file.path(datapath,"Box_1b.4.pdf"),width=7,height=7)
 plot(p[2:2000], (dg[2:2000]/max(dg[2:2000])), ylab="density", type ="l", col="skyblue", lwd=12, xlab ="w", ann=F, axes=F)
 a <- c(5, 20, 36, 101, 292)
 b <- dgamma(p[a],.25,.25)
@@ -321,7 +321,7 @@ for(i in 1:length(a)){
     c[j,i] <- fit(z_range[j],p[a[i]])
   }
 }
-pdf(filename=file.path(datapath,"Box_1b.5.pdf"),width=7,height=7)
+pdf(file=file.path(datapath,"Box_1b.5.pdf"),width=7,height=7)
 plot(z_range,c[,1],type="l",lwd=4,col="skyblue",ylab="fitness",xlab="trait z",yaxt="n",ylim=c(0,1), ann=F, axes=F)
 axis(1,at=c(-1.0,-0.5,0,0.5,1.0),labels=c("-1.0","0.5","0","0.5","1.0"),lwd=7)
 axis(2,at=c(0,0.2,0.4,0.6,0.8,1),lwd=7)
@@ -353,7 +353,7 @@ index_3 <- which(a == 3)
 # choice[c(10,14,16)] <- sample(index[index>100000],1)
 choice <- c(7829,  18716,  44946,  57514,  68425,  72639,  85150, 88813, 105799, 120317, 178858, 147371, 163255, 155317, 171514, 173264)
 
-pdf(filename=file.path(datapath,"Box_1c.pdf"),width=14,height=14)
+pdf(file=file.path(datapath,"Box_1c.pdf"),width=14,height=14)
 par(mfcol=c(4,4),mar = c(2, 2, 0.5, 0))
 for(i in 1:16){
   if (max(abc_sim_summ_x0[choice[i],1:66]) == 0){
@@ -416,7 +416,7 @@ d2$y = dscale(d2)
 d3 <- density(res_h2$unadj.values[,3])
 d3$y = dscale(d3)
 
-pdf(filename=file.path(datapath,"Box_1d.1.pdf"),width=7,height=7)
+pdf(file=file.path(datapath,"Box_1d.1.pdf"),width=7,height=7)
 plot(d1,col="grey",xlab=expression("h"^2),main="",xlim=c(0,1), lwd=12, ann=F, axes=F)
 lines(d2,col="skyblue",lwd=12)
 lines(d3,col="orange",lwd=12)
@@ -456,7 +456,7 @@ ord2 <- c(expression("α"[11]),expression("α"[12]),expression("α"[13]),express
 p = seq(0,0.06, length=100)
 db <- dbeta(p, 0.25, 10)
 
-pdf(filename=file.path(datapath,"Box_1d.2.pdf"),width=12,height=12)
+pdf(file=file.path(datapath,"Box_1d.2.pdf"),width=12,height=12)
 par(mfcol=c(3,3),mar = c(2, 2, 0.5, 0))
 for(i in 1:9){
   plot(get(paste("d",ord1[i],sep="")),,col="#661100",main="",xlim=c(0,0.05),lwd=7,ann=F, axes=F)
@@ -475,7 +475,7 @@ res_wP <- abc(target=abc_obs_summ["abc_obs_summ.2",],param=parm_for_abc[,c("w","
 p = seq(0,3, length=2000)
 d <- density(res_wP$unadj.values[,1])
 d$y = dscale(d)
-pdf(file.path(datapath,"Box_1d.3.pdf"),width=7,height=7)
+pdf(file=file.path(datapath,"Box_1d.3.pdf"),width=7,height=7)
 plot(p, (dgamma(p, 0.25, 0.25)/10), ylab="density", type ="l", col="skyblue", lwd=7, xlab ="w",xlim=c(0,2), ylim=c(0,1),lty=2, ann=F, axes=F)
 lines(d,col="#661100",lwd=12)
 abline(v=fix_parm.2["w"],lty=2,col="black",lwd=3)
