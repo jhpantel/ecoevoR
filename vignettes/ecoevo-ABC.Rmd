@@ -215,7 +215,7 @@ In this instance the neural network performed much better, with a posterior prob
 
 ## 4 Visualizing steps for ABC
 ```{r}
-datapath <- here::here("inst","extdata", "Box1")
+datapath <- here::here("extdata", "Box1")
 #datapath <- file.path("extdata", "Box1")
 #datapath <- paste("/",file.path("Users", "jhpantel", "Documents", "GitHub", "ecoevoR", "inst", "extdata", "Box1"),sep="")
 #setwd(datapath)

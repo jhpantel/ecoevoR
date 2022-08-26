@@ -43,7 +43,7 @@ The simulation is run in MATLAB (the code for this can be found at https://githu
 We can see the dynamics of the simulation here:
 
 ```{r fig1, fig.height = 12, fig.width = 12}
-datapath <- here::here("inst","extdata", "hmsc")
+datapath <- here::here("extdata", "hmsc")
 result <- "h_01_d_minus3"  # Enter desired simulation conditions here
 res <- R.matlab::readMat(paste(datapath,"/",result,"_res.mat",sep=""))
 N <- res$N
