@@ -158,22 +158,27 @@ sim4 <- gen3sis::run_simulation(config = file.path(datapath, "config/config_sout
 max_gam <- max(max(sim1$summary$phylo_summary[,"alive"]),max(sim2$summary$phylo_summary[,"alive"]),max(sim3$summary$phylo_summary[,"alive"]),max(sim4$summary$phylo_summary[,"alive"]))
 max_alpha <- max(max(sim1$summary$`richness-final`[,3],na.rm=T),max(sim2$summary$`richness-final`[,3],na.rm=T),max(sim3$summary$`richness-final`[,3],na.rm=T),max(sim4$summary$`richness-final`[,3],na.rm=T))
 
-pdf(filename=file.path(datapath,"output/Figure_2b.pdf"),width=7,height=7)
+pdf(file=file.path(datapath,"output/Figure_2b.pdf"),width=7,height=7)
 plot_gen3sis(sim1,max_gam = max_gam,max_alpha = max_alpha)
 dev.off()
 
-pdf(filename=file.path(datapath,"output/Figure_2c.pdf"),width=7,height=7)
+pdf(file=file.path(datapath,"output/Figure_2c.pdf"),width=7,height=7)
 plot_gen3sis(sim2,max_gam=max_gam,max_alpha=max_alpha)
 dev.off()
 
-pdf(filename=file.path(datapath,"output/Figure_2d.pdf"),width=7,height=7)
+pdf(file=file.path(datapath,"output/Figure_2d.pdf"),width=7,height=7)
 plot_gen3sis(sim3,max_gam=max_gam,max_alpha=max_alpha)
 dev.off()
 
-pdf(filename=file.path(datapath,"output/Figure_2e.pdf"),width=7,height=7)
+pdf(file=file.path(datapath,"output/Figure_2e.pdf"),width=7,height=7)
 plot_gen3sis(sim4,max_gam=max_gam,max_alpha=max_alpha)
 dev.off()
 ```
+
+```{r fig1, fig.height = 7, fig.width = 7}
+plot_gen3sis(sim1,max_gam = max_gam,max_alpha = max_alpha)
+```
+
 
 ## References
 Hagen, O., Flück, B., Fopp, F., Cabral, J. S., Hartig, F., Pontarp, M., Rangel, T. F.,& Pellissier, L. (2021). gen3sis: A general engine for eco-e volutionary simulations of the processes that shape Earth’s biodiversity. PLoS biology, 19(7), e3001340.
