@@ -45,7 +45,7 @@ We can see the dynamics of the simulation here:
 ```{r fig1, fig.height = 12, fig.width = 12}
 datapath <- here::here("inst","extdata", "hmsc")
 result <- "h_01_d_minus3"  # Enter desired simulation conditions here
-res <- readMat(paste(datapath,"/",result,"_res.mat",sep=""))
+res <- R.matlab::readMat(paste(datapath,"/",result,"_res.mat",sep=""))
 N <- res$N
 
 ## Plot of Patch 1 community dynamics over time
@@ -186,19 +186,6 @@ beanplot::beanplot(B.I,log="")
 ## Fixed effects: environment
 B.E <- m.df[,seq(17,705,by=47)]
 beanplot::beanplot(B.E)
-
-
-plot(density(B.E[,1]))
-  
-
-B.E <- 
-
-x1 <- mpost[,1, drop=FALSE]    
-
-# dat1 - a 15x30x1000 array that gives for each of the 15 species: the intercept, y1-y15 (abundance of species 1-15 in previous year), environmental covariates, and MEM1-13 (spatial eigenvector map) across 1000 iterations. These are the species niches BETA.
-dat1 <- mod1$results$estimation$paramX
-
-plot(mpost$Beta)
 ```
 
 
