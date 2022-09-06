@@ -14,9 +14,10 @@ Suggests:
     ggplot2,
     MASS,
     Matrix,
+    R.rsp,
     rmarkdown,
     tidyverse
-VignetteBuilder: knitr
+VignetteBuilder: R.rsp
 Imports: 
     deSolve,
     graphics,
