@@ -30,6 +30,8 @@ Imports:
     Hmsc,
     R.matlab,
     beanplot,
-    knitr
+    knitr,
+    dplyr,
+    gplots
 Depends: 
     R (>= 2.10)
