@@ -15,7 +15,6 @@ Suggests:
     MASS,
     Matrix,
     R.rsp,
-    rmarkdown,
     tidyverse
 VignetteBuilder: R.rsp
 Imports: 
@@ -32,6 +31,9 @@ Imports:
     beanplot,
     knitr,
     dplyr,
-    gplots
+    gplots,
+    formatR,
+    rmarkdown,
+    rsvg
 Depends: 
     R (>= 2.10)
