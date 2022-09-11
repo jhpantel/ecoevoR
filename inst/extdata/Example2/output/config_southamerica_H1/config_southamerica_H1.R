@@ -21,7 +21,7 @@
 ######################################
 
 # set the random seed for the simulation
-random_seed = 6 
+random_seed = 6
 
 # set the starting time step or leave NA to use the earliest/highest time-step
 start_time = 40
@@ -48,7 +48,7 @@ environmental_ranges = list("temp" = c(-45, 55), "area"=c(2361.5, 12923.4), "ari
 # a place to inspect the internal state of the simulation and collect additional information if desired
 end_of_timestep_observer = function(data, vars, config){
   save_species()
-  plot_richness(data$all_species, data$landscape)
+  #plot_richness(data$all_species, data$landscape)
   # example 1 plot over simulation
     # par(mfrow=c(2,3))
     # plot_raster_single(data$landscape$environment[,"temp"], data$landscape, "temp", NA)
@@ -61,7 +61,7 @@ end_of_timestep_observer = function(data, vars, config){
   # example 2 plot over simulations saving plots
     # plot_richness(data$all_species, data$landscape)
     # plot_landscape(data$landscape)
-  
+
 }
 
 ######################################
@@ -89,10 +89,10 @@ create_ancestor_species <- function(landscape, config) {
     new_species[[i]] <- create_species(initial_cells, config)
     #set local adaptation to max optimal temp equals local temp
     new_species[[i]]$traits[ , "temp"] <- landscape$environment[initial_cells,"temp"]
-    new_species[[i]]$traits[ , "dispersal"] <- 1 
+    new_species[[i]]$traits[ , "dispersal"] <- 1
     #plot_species_presence(landscape, species=new_species[[i]])
   }
-  
+
   return(new_species)
 }
 
@@ -119,7 +119,7 @@ divergence_threshold = 2 #this is 1Myrs
 # factor by which the divergence is increased between geographically isolated population
 # can also be a matrix between the different population clusters
 get_divergence_factor <- function(species, cluster_indices, landscape, config) {
-  
+
   return(1)
 }
 
@@ -130,7 +130,7 @@ get_divergence_factor <- function(species, cluster_indices, landscape, config) {
 
 # mutate the traits of a species and return the new traits matrix
 apply_evolution <- function(species, cluster_indices, landscape, config) {
-  
+
   trait_evolutionary_power <- 0.001
   traits <- species[["traits"]]
   cells <- rownames(traits)
@@ -144,7 +144,7 @@ apply_evolution <- function(species, cluster_indices, landscape, config) {
   #mutations
   mutation_deltas <-rnorm(length(traits[, "temp"]), mean=0, sd=trait_evolutionary_power)
   traits[, "temp"] <- traits[, "temp"] + mutation_deltas
-  
+
   return(traits)
 }
 
@@ -180,6 +180,6 @@ apply_ecology <- function(abundance, traits, landscape, config) {
     #set negative abundances to zero
     abundance[!alive] <- 0
   }
-  
+
   return(abundance)
 }
