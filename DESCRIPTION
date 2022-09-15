@@ -34,6 +34,7 @@ Imports:
     gplots,
     formatR,
     rmarkdown,
-    rsvg
+    rsvg,
+    corrplot
 Depends: 
     R (>= 2.10)
