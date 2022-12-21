@@ -16,7 +16,7 @@ Suggests:
     Matrix,
     R.rsp,
     tidyverse
-VignetteBuilder: R.rsp
+VignetteBuilder: knitr
 Imports: 
     deSolve,
     graphics,
@@ -35,6 +35,8 @@ Imports:
     formatR,
     rmarkdown,
     rsvg,
-    corrplot
+    corrplot,
+    Boruta,
+    randomForest
 Depends: 
     R (>= 2.10)
