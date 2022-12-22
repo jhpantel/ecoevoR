@@ -12,3 +12,16 @@
 #' }
 #' @source See ecoevo-ABC section '2 Simulation'
 "abc_lv"
+
+#' Random forest feature selection, parameter tuning, and model classification for simulations of 3-species Lotka-Volterra model
+#'
+#' A dataset containing the results of a boruta feature selection from simulated data of 3 species population size and trait values over time (Boruta::Boruta), parameter tuning (randomForest:tuneRF), and model classification (randomForest:randomForest). Simulated data comes from a 3-species Lotka-Volterra model with a quantitative genetic model for potential evolution of population growth rate (see vignette ecoevo-ABC). Hypotheses for model classification of simulated observed data are No Evolution(h2 = 0) and Evolution (h2 > 0).
+#'
+#' @format A list with the following elements:
+#' \describe{
+#'   \item{bor}{A list with the elements resulting from feature selection algorithm Boruta::Boruta}
+#'   \item{tune}{A list with the elements resulting from parameter tuning randomForest:tuneRF}
+#'   \item{rf}{A list with the elements resulting from parameter tuning randomForest:randomForest}
+#' }
+#' @source See ecoevo-ABC section '2 Simulation'
+"rf_lv"
