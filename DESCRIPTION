@@ -37,6 +37,7 @@ Imports:
     rsvg,
     corrplot,
     Boruta,
-    randomForest
+    randomForest,
+    caTools
 Depends: 
     R (>= 2.10)
