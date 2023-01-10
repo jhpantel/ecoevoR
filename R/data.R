@@ -9,6 +9,10 @@
 #'   \item{abc_sim_summ}{An nx2 by 69 matrix, with the number of simulations for Model 1 and Model 2 as rows and the 69 summary statistics as columns. The initial trait value was included when rand_sim was run, so the only included summary statistic is the end-point trait value. The other summary statistics are the population size values for each species at each of the intervals recorded (in this example days <- seq(1,300,by=14)).}
 #'   \item{abc_sim_summ_x0}{Same as for abc_sim_summ. In this instance the initial trait value was randomly chosen in the simulation model during rand_sim, and again only the end-point trait value is included as a summary statistic.}
 #'   \item{abc_sim_mods}{A length nx2 vector with elements that give the model (no_evol or evol) that was used to generate the data for all rows in the list elements for each simulation.}
+#'   \item{x0_rec}{A length n vector with elements that are the x0 values (initial trait values) for each of the evol model simulations.}
+#'   \item{cv.modsel}{A list with the results of cross validation for all model simulations (no_evol and evol), for the dataset with x0 and x300 trait values, using a rejection method. List elements are as in ?abc::cv4postpr}
+#'   \item{cv.modsel.x0}{A list with the results of cross validation for all model simulations (no_evol and evol), for the dataset with x0 trait values, using a rejection method. List elements are as in ?abc::cv4postpr}
+#'   \item{cv.modsel.x0.nn}{A list with the results of cross validation for all model simulations (no_evol and evol), for the dataset with x0 trait values, using a neural network method. List elements are as in ?abc::cv4postpr}
 #' }
 #' @source See ecoevo-ABC section '2 Simulation'
 "abc_lv"
