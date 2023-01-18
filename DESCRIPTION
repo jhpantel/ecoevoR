@@ -16,7 +16,7 @@ Suggests:
     Matrix,
     R.rsp,
     tidyverse
-VignetteBuilder: knitr
+VignetteBuilder: R.rsp
 Imports: 
     deSolve,
     graphics,
