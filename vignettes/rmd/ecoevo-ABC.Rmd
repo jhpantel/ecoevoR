@@ -681,22 +681,22 @@ Rubin, D. B. 1984. Bayesianly justifiable and relevant frequency calculations fo
 
 ```{r echo=FALSE,warning=FALSE,message=FALSE,results='hide'}
 ### Box 2A
-pdf(file=file.path(datapath,"Box_2a.pdf"),width=5.565984252,height=1.98956693,pointsize=6)
+pdf(file=file.path(datapath,"Box_2a.pdf"),width=7.87402,height=2.11854331,pointsize=8)
 par(mfrow=c(1,2),mar = c(2, 2, 0.5, 0))
 par(mai=c(0.4,0.4,0.2,0))
-matplot(1:300,sim1[,7:9], type="l",xlab="time",ylab="N", col=c("grey","skyblue","orange"), lty=1, lwd=1, ann=F, axes=F)
+matplot(1:300,sim1[,7:9], type="l",xlab="time",ylab="N", col=c("grey","skyblue","orange"), lty=1, lwd=1.25, ann=F, axes=F)
 axis(1,at=c(0,50,100,150,200,250,300),labels=c(0,"",100,"",200,"",300),lwd=2)
 axis(2,at=c(0,200,400,600,800),lwd=2)
-points(days,sim1[days,7],pch=19,col="grey",cex=1.1)
-points(days,sim1[days,8],pch=19,col="skyblue",cex=1.15)
-points(days,sim1[days,9],pch=19,col="orange",cex=1.1)
+points(days,sim1[days,7],pch=19,col="grey",cex=1.5)
+points(days,sim1[days,8],pch=19,col="skyblue",cex=1.5)
+points(days,sim1[days,9],pch=19,col="orange",cex=1.5)
 
 par(mai=c(0.4,0.2,0.2,0.2))
 matplot(1:300,sim2[,7:9], type="l",xlab="time",ylab="N", col=c("grey","skyblue","orange"), lty=1, lwd=1, ann=F, axes=F)
 axis(1,at=c(0,50,100,150,200,250,300),labels=c(0,"",100,"",200,"",300),lwd=2)
-points(days,sim2[days,7],pch=19,col="grey",cex=1.1)
-points(days,sim2[days,8],pch=19,col="skyblue",cex=1.1)
-points(days,sim2[days,9],pch=19,col="orange",cex=1.1)
+points(days,sim2[days,7],pch=19,col="grey",cex=1.5)
+points(days,sim2[days,8],pch=19,col="skyblue",cex=1.5)
+points(days,sim2[days,9],pch=19,col="orange",cex=1.5)
 dev.off()
 
 ### Box 2B
@@ -814,8 +814,8 @@ index_3 <- which(a == 3)
 choice <- c(7829,  18716,  44946,  57514,  68425,  72639,  85150, 88813, 105799, 120317, 178858, 147371, 163255, 155317, 171514, 173264)
 
 choice_pub <- choice[-c(4,8,12,16)]
-pdf(file=file.path(datapath,"Box_2c.pdf"),width=5.066811024,height=2.87318898,pointsize=10)
-par(mfcol=c(3,4),mar = c(2, 2, 0.5, 0))
+pdf(file=file.path(datapath,"Box_2c.pdf"),width=7.93,height=1.69484252,pointsize=10)
+par(mfcol=c(2,6),mar = c(2, 2, 0.5, 0))
 for(i in 1:12){
   if (max(abc_sim_summ_x0[choice[i],1:66]) == 0){
     lim <- 10
