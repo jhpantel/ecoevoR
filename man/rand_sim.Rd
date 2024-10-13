@@ -2,7 +2,7 @@
 % Please edit documentation in R/rand_sim.R
 \name{rand_sim}
 \alias{rand_sim}
-\title{Run a simulation with parameter values randomly chosen from prior distributions (currently for 3-species Leslie-Gower model)}
+\title{Random simulation}
 \usage{
 rand_sim(
   N0 = c(10, 10, 10),
@@ -14,9 +14,9 @@ rand_sim(
 )
 }
 \arguments{
-\item{N0}{A vector with the initial population size for all three species ($N_{1,0}$, $N_{2,0}$, $N_{3,0}$)}
+\item{N0}{A vector with the initial population size for all three species \eqn{N_{1,0}$, $N_{2,0}$, $N_{3,0}})}
 
-\item{x0}{A vector with the initial trait value \emph{x} for all three species ($x_{1,0}$, $x_{2,0}$, $x_{3,0}$)}
+\item{x0}{A vector with the initial trait value \emph{x} for all three species (\eqn{x_{1,0}$, $x_{2,0}$, $x_{3,0}})}
 
 \item{E}{A scalar with the local environmental optimum trait value E}
 
@@ -28,7 +28,7 @@ rand_sim(
 }
 \value{
 A list with the elements:
-\itemize{
+\describe{
 \item{"pop_record"}{A three-dimensional array that returns the following for all simulation iterations (n) at all time points:
 \describe{
 \item{"x1,x2,x3"}{The population size of all three species at time t}
@@ -39,6 +39,7 @@ A list with the elements:
 \item{"l1,l2,l3"}{The per-capita  growth rate of all three species from time t to t+1}
 }}
 \item{"parm_record"}{An n-by-18 matrix with the values for all model parameters used for each of the n simulation iterations.}
+}
 }
 \description{
 Run a simulation with parameter values randomly chosen from prior distributions (currently for 3-species Leslie-Gower model)

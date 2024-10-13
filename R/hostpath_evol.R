@@ -1,19 +1,19 @@
 #' Simulate host-pathogen eco-evolutionary model
 #'
-#' Simulate host-pathogen dynamics under the eco-evolutionary model described in Luo & Koelle (2013). In this model, *S* and *I* are the susceptible and infected host population size, *B* is a constant birth rate, μ is the per capita death rate, α is the disease-induced mortality rate (virulence), and β is the transmission rate. The transmission-virulence trade-off is modeled by $\beta(\alpha) = c\alpha^{\frac{1}{\gamma}}$, where *c* is a positive constant, γ indicates the magnitude of the transmission-virulence tradeoff, and *V* is the additive genetic variance.
+#' Simulate host-pathogen dynamics under the eco-evolutionary model described in Luo & Koelle (2013). In this model, *S* and *I* are the susceptible and infected host population size, *B* is a constant birth rate, \eqn{\mu} is the per capita death rate, \eqn{\alpha} is the disease-induced mortality rate (virulence), and \eqn{\beta} is the transmission rate. The transmission-virulence trade-off is modeled by \eqn{\beta(\alpha) = c \alpha^{\frac{1}{\gamma}}}, where *c* is a positive constant, \eqn{\gamma} indicates the magnitude of the transmission-virulence tradeoff, and *V* is the additive genetic variance.
 #' The function calls ode (deSolve) to solve the system of ordinary differential equations given in function "lk_evol".
 #'
 #' @param t A vector of time steps for which the differential equations will be evaluated across
 #' @param x A vector of starting values for S, I, and alpha
-#' @param params A vector of values for the model parameters B, μ, V, γ, and c
+#' @param params A vector of values for the model parameters B, \eqn{\mu}, V, \eqn{\gamma}, and c
 #' @param method A text string indicating which function to use for the ODE system. "ecoXevo" there is an eco-evolutionary feedback between pathogen virulence evolution and host population size. In "eco_evo virulence evolution is not dependent on S and there is no eco-evolutionary feedback.
 #'
 #' @return A dataframe with the elements:
-#' \itemize{
+#' \describe{
 #' \item{"time"}{Numeric, time values from parameter t}
 #' \item{"S"}{Numeric, a time series of parameter S (susceptible host population size)}
 #' \item{"I"}{Numeric, a time series of parameter I (infected host population size)}
-#' \item{"alpha"}{Numeric, a time series of parameter α (the virulence of the pathogen)}
+#' \item{"alpha"}{Numeric, a time series of parameter \eqn{\alpha} (the virulence of the pathogen)}
 #' }
 #' @export
 #' @import deSolve

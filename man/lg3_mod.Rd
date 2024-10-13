@@ -14,7 +14,7 @@ lg3_mod(n, E, tx, parms)
 \item{tx}{A vector with the trait value for all three species (x1, x2, x3) at time t}
 
 \item{parms}{A vector with the elements:
-\itemize{
+\describe{
 \item{"a11"}{Intraspecific competition coefficient for species 1}
 \item{"a12"}{Per-capita impact of species 2 on species 1}
 \item{"a13"}{Per-capita impact of species 3 on species 1}
@@ -39,7 +39,7 @@ The values of population size, trait values, and population growth rate for spec
 Equations for Leslie-gower population growth (discrete-time Lotka-Volterra) models for three species. Population growth is modelled as population mean fitness as per Gomulkiewicz & Holt 1995. These formulas calculate the population's maximum growth rate (with a trait value at the local environmental optimum), the distance from the optimal trait value and evolutionary inertia of trait given phenotypic variation, and the change in population size N from one time step to the next given intra- and interspecific interaction strength.
 }
 \details{
-The model is a discrete time, stochastic, quantitative genetic model of evolutionary rescue (Gomulkiewicz & Holt 1995), with some modifications. Populations experience logistic growth: \eqn{N_t+1 = N_t + \lambda N_t ((1-N_t)/K)} and the population growth rate \lambda is the absolute mean fitness of a population in generation \emph{t}. Mean fitness is determined by a quantitative trait \emph{x} as follows:
+The model is a discrete time, stochastic, quantitative genetic model of evolutionary rescue (Gomulkiewicz & Holt 1995), with some modifications. Populations experience logistic growth: \eqn{N_t+1 = N_t + \lambda N_t ((1-N_t)/K)} and the population growth rate \eqn{\lambda} is the absolute mean fitness of a population in generation \emph{t}. Mean fitness is determined by a quantitative trait \emph{x} as follows:
 \eqn{\lambda = \hat{W}e^{w+(1-h^2)P / (P+w)(E-x_t)]^2}{2(P+w)}}
 
 where \eqn{\hat{W} = W_max sqrt(\frac{w}{P + w})}, \emph{W_max} is the absolute fitness when the phenotype \emph{x} equals the local environmental optimum trait value \emph{E}, \emph{w} is the width of the Gaussian fitness function (which determines the strength of selection), \emph{P} is the width of the distribution of the phenotype \emph{x}, $h^2$ is the heritability of the phenotype \emph{x}, and \emph{x_t} is the population's mean phenotype at time \emph{t}.
