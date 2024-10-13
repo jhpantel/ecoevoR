@@ -2,7 +2,7 @@
 % Please edit documentation in R/lg3_mod.R
 \name{lg3_mod}
 \alias{lg3_mod}
-\title{Discrete-time evolutionary rescuse + competition model for three species}
+\title{Discrete-time evolutionary rescue + competition model for three species}
 \usage{
 lg3_mod(n, E, tx, parms)
 }
