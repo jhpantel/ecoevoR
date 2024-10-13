@@ -26,7 +26,7 @@ A dataframe with the elements:
 }
 \description{
 Simulate host-pathogen dynamics under the eco-evolutionary model described in Luo & Koelle (2013). In this model, \emph{S} and \emph{I} are the susceptible and infected host population size, \emph{B} is a constant birth rate, \eqn{\mu} is the per capita death rate, \eqn{\alpha} is the disease-induced mortality rate (virulence), and \eqn{\beta} is the transmission rate. The transmission-virulence trade-off is modeled by \eqn{\beta(\alpha) = c \alpha^{\frac{1}{\gamma}}}, where \emph{c} is a positive constant, \eqn{\gamma} indicates the magnitude of the transmission-virulence tradeoff, and \emph{V} is the additive genetic variance.
-The function calls ode (deSolve) to solve the system of ordinary differential equations given in function "lk_evol".
+The function calls ode (deSolve) to solve the system of ordinary differential equations given in function \code{\link[=lk_mods]{lk_mods()}}.
 }
 \examples{
 parms <- c(B = (10^7), mu = 1, V = 0, gam = 2, c = 3*10^-7)

@@ -1,0 +1,41 @@
+#' @name lg2_mods
+#' @aliases disc_log
+#' @aliases disc_log_E
+#' @title Discrete-time logistic population growth, with options for competition, environmental covariate, and trait evolution
+#'
+#' @description
+#' disc_log and disc_log_E are functions for logistic growth in a single species, with user-provided growth rate, initial population size, and strength of intraspecific competition. The function disc_log_E includes an environmental covariate, and growth rate now depends on this covariate as a function of the distance from the optimal trait value
+#'
+#' @param r the user-supplied population growth rate (when the species trait x is at the environmental optimum)
+#' @param N0 the initial population size
+#' @param alpha the intraspecific interaction coefficient
+#' @param E the initial value of the environmental covariate
+#' @param x the initial value of the species trait
+#' @return xx
+#'
+#' @examples
+#' # Simulate initial species population growth
+#' N1.0 <- rpois(1,10)
+#' r1.0 <- 1.67
+#' alpha.11 <- 0.00125
+#' # Simulation of model for t time steps
+#' t <- 30
+#' N <- rep(NA, t)
+#' N[1] <- N1.0
+#' for (i in 2:t) {
+#'   N[i] <- disc_log(r=r1.0, N0=N[i-1], alpha=alpha.11)
+#' }
+#'
+#' @rdname lg2_mods
+#' @export
+disc_log <- function(r, N0, alpha) {
+  Nt1 <- (r*N0) / (1+alpha*N0)
+  return(Nt1)
+}
+
+#' @rdname lg2_mods
+#' @export
+disc_log_E <- function(r, N0, alpha, E, x) {
+  Nt1 <- ((r*exp(-(E-x)^2))*N0) / (1+alpha*N0)
+  return(Nt1)
+}

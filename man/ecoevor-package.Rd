@@ -9,7 +9,7 @@
 An R package that combines simulation models (a Beverton-Holt model with quantitative trait evolution, a host-pathogen model with virulence evolution, and a community assembly model with speciation) with Approximate Bayesian Computing to estimate model parameter values from observed datasets. Uses the gen3sis model of Hagen et al. 2021 for ccommunity assembly and speciation simulation, and uses deSolve for the host-pathogen model.
 }
 \author{
-\strong{Maintainer}: Jelena Pantel \email{jelena.pantel@uni-due.de} (\href{https://orcid.org/Y0000-0002-8139-5520}{ORCID})
+\strong{Maintainer}: Jelena Pantel \email{jelena.pantel@univ-fcomte.fr} (\href{https://orcid.org/Y0000-0002-8139-5520}{ORCID})
 
 }
 \keyword{internal}

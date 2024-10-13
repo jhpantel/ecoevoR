@@ -1,4 +1,4 @@
-#' Discrete-time evolutionary rescuse + competition model for three species
+#' Discrete-time evolutionary rescue + competition model for three species
 #'
 #' Equations for Leslie-gower population growth (discrete-time Lotka-Volterra) models for three species. Population growth is modelled as population mean fitness as per Gomulkiewicz & Holt 1995. These formulas calculate the population's maximum growth rate (with a trait value at the local environmental optimum), the distance from the optimal trait value and evolutionary inertia of trait given phenotypic variation, and the change in population size N from one time step to the next given intra- and interspecific interaction strength.
 #'
