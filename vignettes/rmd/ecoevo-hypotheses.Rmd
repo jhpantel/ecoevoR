@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(ecoevor)
 library(deSolve)
-library(tidyverse)
+library(tidyr)
 library(ggplot2)
 library(gen3sis)
 library(raster)
@@ -110,7 +110,7 @@ red  %>%
 ```
 
 ## 3 Example 2. macroevolution, speciation, and community assembly
-In Figure 2 of Pantel & Becks (in review), we discuss a model of evolution, speciation, and community assembly using the gen3sis eco-evolutionary simulation engine (Hagen et al. 2021). We adapt their model with a hypothetical community of 10 ancestral species, randomly placed as a single initial population on the map of South America (an 81x71 grid with cell-specific temperature values that impact population growth via the distance between a local population’s trait value and the local optimum and that impact local carrying capacity). Movement is via a cost function based on the distance between sites and a species-specific dispersal value, and evolution and speciation occurs across the dynamic landscape over 40 million years.
+In Figure 2 of Pantel & Becks (2023), we discuss a model of evolution, speciation, and community assembly using the gen3sis eco-evolutionary simulation engine (Hagen et al. 2021). We adapt their model with a hypothetical community of 10 ancestral species, randomly placed as a single initial population on the map of South America (an 81x71 grid with cell-specific temperature values that impact population growth via the distance between a local population’s trait value and the local optimum and that impact local carrying capacity). Movement is via a cost function based on the distance between sites and a species-specific dispersal value, and evolution and speciation occurs across the dynamic landscape over 40 million years.
 
 In such a system, ecological and evolutionary processes combine to structure biodiversity patterns at multiple scales, but determining the nature of which processes are most likely to drive observed contemporary biodiversity data can be difficult. However, a researcher can generate simulation models under a series of alternative hypotheses and compare simulated to observed data. We consider eco-macroevolutionary dynamics for:
 
@@ -192,3 +192,5 @@ Hagen, O., Flück, B., Fopp, F., Cabral, J. S., Hartig, F., Pontarp, M., Rangel,
 Lion, S. (2018). Theoretical approaches in evolutionary ecology: environmental feedback as a unifying perspective. The American Naturalist, 191(1), 21-44.
 
 Luo, S., & Koelle, K. (2013). Navigating the devious course of evolution: the importance of mechanistic models for identifying eco-evolutionary dynamics in nature. The American Naturalist, 181(S1), S58-S75.
+
+Pantel, J. H., & Becks, L. (2023). Statistical methods to identify mechanisms in studies of eco-evolutionary dynamics. Trends in Ecology & Evolution, 38(8), 760-772.

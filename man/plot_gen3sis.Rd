@@ -17,7 +17,7 @@ plot_gen3sis(
 
 \item{summary_title}{summary plot title as character. If NULL, title is computed from input name (see gen3sis::run_simulation)}
 
-\item{summary_legend}{either a staring with _\_n for new lines or NULL. If NULL, provides default summary and simulation information (see gen3sis::run_simulation)}
+\item{summary_legend}{either a staring with \verb{\\_n} for new lines or NULL. If NULL, provides default summary and simulation information (see gen3sis::run_simulation)}
 
 \item{max_gam}{A maximum gamma diversity value across multiple simulation runs. Sets the right-y-axis for the gamma diversity plot.}
 

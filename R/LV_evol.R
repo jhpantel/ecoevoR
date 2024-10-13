@@ -1,12 +1,13 @@
 #' Simulate three-species discrete-time growth with competition and evolving growth rate
-#' Simulate competition, growth, and trait evolution in an eco-evolutionary version of a discrte-time Leslie-Gower model. The function calls the formulas in "lg3_mod" over the time intervals for which population growth is calculated.
 #'
-#' @param N0 A vector with the initial population size for all three species ($N_{1,0}$, $N_{2,0}$, $N_{3,0}$)
-#' @param x0 A vector with the initial trait value *x* for all three species ($x_{1,0}$, $x_{2,0}$, $x_{3,0}$)
+#' Simulate competition, growth, and trait evolution in an eco-evolutionary version of a discrete-time Leslie-Gower model. The function calls the formulas in lg3_mod over the time intervals for which population growth is calculated.
+#'
+#' @param N0 A vector with the initial population size for all three species (\eqn{N_{1,0}$, $N_{2,0}$, $N_{3,0}})
+#' @param x0 A vector with the initial trait value *x* for all three species (\eqn{x_{1,0}$, $x_{2,0}$, $x_{3,0}})
 #' @param E A scalar with the local environmental optimum trait value E
 #' @param time_points A numeric value of the number of time steps for the simulation
 #' @param parms A vector with the elements:
-#' \itemize{
+#' \describe{
 #' \item{"a11"}{Intraspecific competition coefficient for species 1}
 #' \item{"a12"}{Per-capita impact of species 2 on species 1}
 #' \item{"a13"}{Per-capita impact of species 3 on species 1}
@@ -25,13 +26,14 @@
 #' }
 #'
 #' @return A dataframe with the elements:
-#' \itemize{
+#' \describe{
 #' \item{"x1,x2,x3"}{The population size of all three species at time t}
 #' \item{"tx1,tx2,tx3"}{The trait value of all three species at time t}
 #' \item{"y1,y2,y3"}{The population size of all three species at time t+1}
 #' \item{"yt1,yt2,yt3"}{The trait value of all three species at time t+1}
 #' \item{"E"}{The local environmental optimum trait value at time t+1}
 #' \item{"l1,l2,l3"}{The per-capita  growth rate of all three species from time t to t+1}
+#' }
 #'
 #' @export
 #'

@@ -2,7 +2,7 @@
 #'
 #' @param output a sgen3sis output object resulting from a gen3sis simulation (i.e. run_simulation; see gen3sis::run_simulation)
 #' @param summary_title summary plot title as character. If NULL, title is computed from input name (see gen3sis::run_simulation)
-#' @param summary_legend either a staring with _\_n for new lines or NULL. If NULL, provides default summary and simulation information (see gen3sis::run_simulation)
+#' @param summary_legend either a staring with `\_n` for new lines or NULL. If NULL, provides default summary and simulation information (see gen3sis::run_simulation)
 #' @param max_gam A maximum gamma diversity value across multiple simulation runs. Sets the right-y-axis for the gamma diversity plot.
 #' @param max_alpha A maximum alpha diversity value across multiple simulation runs. Sets the color scale for the alpha diversity map plot.
 #'
@@ -49,7 +49,7 @@ plot_gen3sis <- function (output, summary_title = NULL, summary_legend = NULL, m
     d <- output$summary$phylo_summary[-1, -1]
     graphics::plot(d[, "alive"], xlab = "", ylab = "", type = "l", col = "black", lwd = 4, frame.plot = FALSE, xaxt = "n", yaxt = "n",ylim=c(0,round_up(max_gam)))
     graphics::axis(4, line = -1, cex = 1, cex.axis = 1, col = "black")
-    graphics::mtext(side = 4, text = "γ richness", col = "black",
+    graphics::mtext(side = 4, text = expression(paste(gamma," richness",sep="")), col = "black",
           line = 2, cex = 1.1)
     graphics::par(new = TRUE)
     graphics::plot(d[, "speciations"], pch = 3, col = grDevices::rgb(0, 0, 1, 0.5), xlab = "", ylab = "", type = "b", frame.plot = FALSE, xaxt = "n", yaxt = "n", ylim = c(0,round_up(max_gam)))
@@ -78,7 +78,7 @@ plot_gen3sis <- function (output, summary_title = NULL, summary_legend = NULL, m
     breaks <- seq(0, max_alpha, by = 0.01)
     cols <- grDevices::colorRampPalette(rc)(length(breaks) - 1)
     raster::image(raster::rasterFromXYZ(output$summary$`richness-final`),breaks=breaks, col = cols)
-    graphics::mtext(4, text = "Final α richness", line = 1, cex = 1.2)
+    graphics::mtext(4, text = expression(paste("Final ",alpha," richness",sep="")), line = 1, cex = 1.2)
     # Plot scale and colors
     rng <- seq(0,max_alpha,10)
     arg <- list(at=rng, labels=round(rng, 4))

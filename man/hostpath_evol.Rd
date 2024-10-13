@@ -11,21 +11,21 @@ hostpath_evol(t, x, params, method = c("ecoXevo", "eco_evo"))
 
 \item{x}{A vector of starting values for S, I, and alpha}
 
-\item{params}{A vector of values for the model parameters B, μ, V, γ, and c}
+\item{params}{A vector of values for the model parameters B, \eqn{\mu}, V, \eqn{\gamma}, and c}
 
 \item{method}{A text string indicating which function to use for the ODE system. "ecoXevo" there is an eco-evolutionary feedback between pathogen virulence evolution and host population size. In "eco_evo virulence evolution is not dependent on S and there is no eco-evolutionary feedback.}
 }
 \value{
 A dataframe with the elements:
-\itemize{
+\describe{
 \item{"time"}{Numeric, time values from parameter t}
 \item{"S"}{Numeric, a time series of parameter S (susceptible host population size)}
 \item{"I"}{Numeric, a time series of parameter I (infected host population size)}
-\item{"alpha"}{Numeric, a time series of parameter α (the virulence of the pathogen)}
+\item{"alpha"}{Numeric, a time series of parameter \eqn{\alpha} (the virulence of the pathogen)}
 }
 }
 \description{
-Simulate host-pathogen dynamics under the eco-evolutionary model described in Luo & Koelle (2013). In this model, \emph{S} and \emph{I} are the susceptible and infected host population size, \emph{B} is a constant birth rate, μ is the per capita death rate, α is the disease-induced mortality rate (virulence), and β is the transmission rate. The transmission-virulence trade-off is modeled by $\beta(\alpha) = c\alpha^{\frac{1}{\gamma}}$, where \emph{c} is a positive constant, γ indicates the magnitude of the transmission-virulence tradeoff, and \emph{V} is the additive genetic variance.
+Simulate host-pathogen dynamics under the eco-evolutionary model described in Luo & Koelle (2013). In this model, \emph{S} and \emph{I} are the susceptible and infected host population size, \emph{B} is a constant birth rate, \eqn{\mu} is the per capita death rate, \eqn{\alpha} is the disease-induced mortality rate (virulence), and \eqn{\beta} is the transmission rate. The transmission-virulence trade-off is modeled by \eqn{\beta(\alpha) = c \alpha^{\frac{1}{\gamma}}}, where \emph{c} is a positive constant, \eqn{\gamma} indicates the magnitude of the transmission-virulence tradeoff, and \emph{V} is the additive genetic variance.
 The function calls ode (deSolve) to solve the system of ordinary differential equations given in function "lk_evol".
 }
 \examples{
