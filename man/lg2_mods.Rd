@@ -4,11 +4,19 @@
 \alias{lg2_mods}
 \alias{disc_log}
 \alias{disc_log_E}
+\alias{#'}
+\alias{@aliases}
+\alias{disc_LV_comp}
+\alias{disc_LV_E}
 \title{Discrete-time logistic population growth, with options for competition, environmental covariate, and trait evolution}
 \usage{
 disc_log(r, N0, alpha)
 
 disc_log_E(r, N0, alpha, E, x)
+
+disc_LV_comp(r, N0, alpha)
+
+disc_LV_E(r, N0, alpha, E, x)
 }
 \arguments{
 \item{r}{the user-supplied population growth rate (when the species trait x is at the environmental optimum)}
@@ -25,7 +33,7 @@ disc_log_E(r, N0, alpha, E, x)
 xx
 }
 \description{
-disc_log and disc_log_E are functions for logistic growth in a single species, with user-provided growth rate, initial population size, and strength of intraspecific competition. The function disc_log_E includes an environmental covariate, and growth rate now depends on this covariate as a function of the distance from the optimal trait value
+disc_log and disc_log_E are functions for logistic growth in a single species, with user-provided growth rate, initial population size, and strength of intraspecific competition. The function disc_log_E includes an environmental covariate, and growth rate now depends on this covariate as a function of the distance from the optimal trait value. XX disc_LV_comp XX disc_LV_E XX
 }
 \examples{
 # Simulate initial species population growth
