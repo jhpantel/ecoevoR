@@ -3,6 +3,7 @@
 export(LV_evol)
 export(disc_LV_E)
 export(disc_LV_comp)
+export(disc_LV_evol)
 export(disc_log)
 export(disc_log_E)
 export(hostpath_evol)
