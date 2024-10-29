@@ -68,6 +68,7 @@ disc_LV_E <- function(r,N0,alpha,E,x) {
 #' @rdname lg2_mods
 #' @export
 disc_LV_evol <- function(N0,alpha,E,x,P,w,Wmax,h2) {
+  if(length(N0)==1){N0 = as.matrix(N0)}
   What <- Wmax*sqrt(w/(P+w))
   r <- What*exp((-(((w+(1-h2)*P)/(P+w))*(E-x))^2)/(2*(P+w)))
   num <- r*N0
